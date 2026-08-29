@@ -1,62 +1,98 @@
-### Assalamualaykum, Hi I am ADHAM AA ðŸ‘‹
+# adhamaa.github.io
 
-## I'm learning forever
+Personal site and portfolio of **Adham Akmal Azmi** — a statically exported Next.js build, deployed to GitHub Pages on every push to `master`.
 
-- ðŸŒ± Iâ€™m currently learning Data Scraping & API
-- ðŸ‘¯ Iâ€™m looking to give value to others and to Islam
-- âš¡ Fun fact: I love to game and memorized Quran
+**Live:** https://adhamaa.github.io
 
-## What I Stand For
+[![Deploy](https://github.com/adhamaa/adhamaa.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/adhamaa/adhamaa.github.io/actions/workflows/deploy.yml)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 
-- **Continuous Learning** â€” I believe in constant growth and improvement. Every project is an opportunity to learn something new.
-- **Adding Value** â€” I aim to create solutions that help others and contribute meaningfully to the community.
-- **Quality Code** â€” I write clean, maintainable code with best practices in mind.
-- **Open Source** â€” I contribute to open source projects, especially those that serve the Islamic community.
-
-### Connect with me:
-
-[<img align="left" alt="codeSTACKr | Twitter" width="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/twitter.svg" />][twitter]
-[<img align="left" alt="codeSTACKr | LinkedIn" width="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/linkedin.svg" />][linkedin]
-[<img align="left" alt="codeSTACKr | Instagram" width="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/instagram.svg" />][instagram]
-
-<br />
-
-### Languages and Tools:
-
-[<img align="left" alt="Visual Studio Code" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png" />][#]
-[<img align="left" alt="HTML5" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png" />][#]
-[<img align="left" alt="CSS3" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png" />][#]
-[<img align="left" alt="Sass" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sass/sass.png" />][#]
-[<img align="left" alt="JavaScript" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png" />][#]
-[<img align="left" alt="React" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" />][#]
-[<img align="left" alt="Next" width="26px" src="https://raw.githubusercontent.com/github/explore/28b02bbc9ad9f7a503c43775aebeb515dc2da5fc/topics/nextjs/nextjs.png" />][#]
-[<img align="left" alt="Gatsby" width="26px" src="https://raw.githubusercontent.com/github/explore/e94815998e4e0713912fed477a1f346ec04c3da2/topics/gatsby/gatsby.png" />][#]
-[<img align="left" alt="GraphQL" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/graphql/graphql.png" />][#]
-[<img align="left" alt="Node.js" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/nodejs/nodejs.png" />][#]
-[<img align="left" alt="SQL" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sql/sql.png" />][#]
-[<img align="left" alt="MySQL" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/mysql/mysql.png" />][#]
-[<img align="left" alt="MongoDB" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/mongodb/mongodb.png" />][#]
-[<img align="left" alt="Git" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png" />][#]
-[<img align="left" alt="GitHub" width="26px" src="https://raw.githubusercontent.com/github/explore/78df643247d429f6cc873026c0622819ad797942/topics/github/github.png" />][#]
-[<img align="left" alt="Terminal" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/terminal/terminal.png" />][#]
-
-<br />
-<br />
+> Looking for the profile README instead? That lives in [adhamaa/adhamaa](https://github.com/adhamaa/adhamaa) — GitHub renders the Overview only from the repo named after the account.
 
 ---
 
-### âš¡ GitHub Stats:
+## What it is
 
-<a href="https://github.com/adhamaa/github-readme-stats">
-  <img height=200 align="center" src="https://github-readme-stats-six-pied.vercel.app/api?username=adhamaa&show_icons=true&theme=dark" />
-</a>
-<a href="https://github.com/adhamaa/convoychat">
-  <img height=200 align="center" src="https://github-readme-stats-six-pied.vercel.app/api/top-langs?username=adhamaa&show_icons=true&theme=dark&layout=compact&langs_count=8&card_width=320" />
-</a>
+A one-page portfolio plus an about page and a component lab, built dark-first with a terminal/editor aesthetic. Three things shape the implementation:
 
-[website]: https://example.com
-[twitter]: https://twitter.com/adhamakmal
-[youtube]: https://youtube.com/adhamaa92
-[instagram]: https://instagram.com/adhamaa
-[linkedin]: https://www.linkedin.com/in/adham-akmal-azmi-421a7b134/
-[#]: #
+- **No server.** `output: "export"` produces a fully static `out/`. Nothing runs at request time, so hosting is free and there is nothing to keep patched.
+- **Typed content layer.** Copy is data, not JSX. Everything personal lives in `src/data/` and the pages render whatever is there.
+- **Client JS only where earned.** Pages that need no interactivity ship none; the palette, theme toggle and scroll reveals are the only client components.
+
+## Stack
+
+| Layer | Choice |
+| :--- | :--- |
+| Framework | Next.js 14, App Router, static export |
+| Language | TypeScript |
+| Styling | Tailwind CSS with CSS-variable design tokens, dark-first |
+| Primitives | Radix UI / shadcn-style components in `src/components/ui` |
+| Fonts | Inter + JetBrains Mono via `next/font` |
+| Table demo | Mantine React Table, driven headlessly against custom markup |
+| Hosting | GitHub Pages via GitHub Actions |
+
+## Layout
+
+```
+src/
+  app/              routes: / , /about , /table (lab), sitemap.ts, robots.ts
+  components/
+    sections/       home page sections (hero, work, experience, stack, contact)
+    site/           chrome: nav, footer, command palette, reveal, icons
+    ui/             shadcn primitives
+  data/             ← the content layer, edit this first
+    profile.ts      identity, tagline, stats, capabilities, principles
+    projects.ts     selected work: problem / what I built / highlights
+    experience.ts   roles, education, languages
+    stack.ts        grouped tech + hero ticker
+resume/             résumé source (HTML) → rendered to public/*.pdf
+public/             static assets, including the résumé PDF
+```
+
+### Editing content
+
+Change `src/data/*.ts` — not the components. The pages read from those files, so copy changes never require touching JSX. `profile.ts` is the single source of truth for name, role, contact details and the résumé link, and it feeds page metadata, the sitemap and the JSON-LD `Person` schema as well as the visible page.
+
+## Local development
+
+CI installs with **yarn** (the workflow detects `yarn.lock` first), so prefer it locally for parity:
+
+```bash
+yarn install
+yarn dev
+```
+
+Then open http://localhost:3000.
+
+```bash
+yarn build   # static export to out/
+yarn lint    # eslint, same rules CI enforces
+```
+
+> **Note:** both `yarn.lock` and `pnpm-lock.yaml` are committed. CI uses yarn. Installing with pnpm works but resolves slightly different patch versions, so a build that passes locally under pnpm is not proof CI will pass — run `yarn lint` before pushing.
+
+## Deployment
+
+`.github/workflows/deploy.yml` builds and publishes to GitHub Pages on push to `master`, and can be run manually from the Actions tab.
+
+- Pages source is **GitHub Actions**, not a branch.
+- This is a *user* site (`<username>.github.io`), served at the domain root, so **no `basePath` is needed**. Setting one would break every asset path — see the commented-out line in `next.config.js`.
+- `public/.nojekyll` stops Pages from filtering `_next/`.
+
+## Résumé
+
+The PDF at `public/Adham_Akmal_Azmi_Resume.pdf` is generated from `resume/Adham_Akmal_Azmi_Resume.html`, so edits go in the HTML and the PDF is rebuilt:
+
+```bash
+msedge --headless=new --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf="public/Adham_Akmal_Azmi_Resume.pdf" \
+  "file:///<absolute-path>/resume/Adham_Akmal_Azmi_Resume.html"
+```
+
+Any Chromium binary works in place of `msedge`. The layout targets two A4 pages and the output stays text-extractable so applicant tracking systems can parse it.
+
+## License
+
+Code is free to learn from. The written content, résumé and personal branding are not — please don't redeploy this as your own portfolio.
