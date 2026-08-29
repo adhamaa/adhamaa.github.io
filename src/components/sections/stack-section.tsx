@@ -15,6 +15,7 @@ export function StackSection() {
           <Reveal
             key={group.id}
             delay={index * 70}
+            depth
             className="flex flex-col bg-background p-6"
           >
             <div className="mb-5 flex items-baseline justify-between gap-2">
