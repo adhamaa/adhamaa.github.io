@@ -85,6 +85,18 @@ module.exports = {
           from: { opacity: "0", transform: "translateY(12px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        /* Same idea as fade-up, but the card swings up out of depth. */
+        "rise-3d": {
+          from: {
+            opacity: "0",
+            transform:
+              "perspective(900px) translate3d(0, 28px, -70px) rotateX(12deg)",
+          },
+          to: {
+            opacity: "1",
+            transform: "perspective(900px) translate3d(0, 0, 0) rotateX(0deg)",
+          },
+        },
         blink: {
           "0%, 49%": { opacity: "1" },
           "50%, 100%": { opacity: "0" },
@@ -103,6 +115,7 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "rise-3d": "rise-3d 0.9s cubic-bezier(0.16, 1, 0.3, 1) both",
         blink: "blink 1.1s steps(1) infinite",
         marquee: "marquee 40s linear infinite",
         "pulse-ring": "pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite",

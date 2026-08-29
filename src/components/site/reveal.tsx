@@ -8,6 +8,8 @@ type RevealProps = {
   className?: string;
   /** Stagger in milliseconds. */
   delay?: number;
+  /** Swing up out of depth instead of a flat fade. */
+  depth?: boolean;
   as?: "div" | "section" | "li" | "article";
 };
 
@@ -19,6 +21,7 @@ export function Reveal({
   children,
   className,
   delay = 0,
+  depth = false,
   as: Tag = "div",
 }: RevealProps) {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -50,7 +53,11 @@ export function Reveal({
       ref={ref as never}
       style={shown ? { animationDelay: `${delay}ms` } : undefined}
       className={cn(
-        shown ? "animate-fade-up" : "opacity-0 motion-reduce:opacity-100",
+        shown
+          ? depth
+            ? "animate-rise-3d"
+            : "animate-fade-up"
+          : "opacity-0 motion-reduce:opacity-100",
         className
       )}
     >

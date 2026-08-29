@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
+import { Scroll3D, Tilt3D } from "@/components/site/scroll-3d";
 import { GitHubIcon } from "@/components/site/icons";
 import { projects, type Project } from "@/data/projects";
 
@@ -77,6 +78,7 @@ export function WorkSection() {
             as="li"
             key={project.id}
             delay={index * 80}
+            depth
             className="group border-b border-border/70"
           >
             <div className="grid gap-6 py-10 transition-colors md:grid-cols-[5rem_1fr_9rem] md:gap-10 md:group-hover:bg-muted/20">
@@ -94,21 +96,33 @@ export function WorkSection() {
                 </p>
 
                 {project.image ? (
-                  <figure className="mt-6 overflow-hidden rounded-lg border border-border/80 bg-muted/20">
-                    <div className="flex items-center gap-1.5 border-b border-border/70 bg-muted/40 px-3 py-2">
-                      <span className="h-2 w-2 rounded-full bg-destructive/50" />
-                      <span className="h-2 w-2 rounded-full bg-amber-500/50" />
-                      <span className="h-2 w-2 rounded-full bg-brand/50" />
-                    </div>
-                    <Image
-                      src={project.image}
-                      alt={project.imageAlt ?? project.name}
-                      width={1910}
-                      height={872}
-                      sizes="(min-width: 768px) 42rem, 100vw"
-                      className="h-auto w-full"
-                    />
-                  </figure>
+                  <Scroll3D
+                    className="mt-6"
+                    rotateX={16}
+                    translateY={64}
+                    translateZ={-150}
+                    scale={0.06}
+                    fade={0.4}
+                    perspective={1100}
+                  >
+                    <Tilt3D strength={5} perspective={1300}>
+                      <figure className="overflow-hidden rounded-lg border border-border/80 bg-muted/20">
+                        <div className="flex items-center gap-1.5 border-b border-border/70 bg-muted/40 px-3 py-2">
+                          <span className="h-2 w-2 rounded-full bg-destructive/50" />
+                          <span className="h-2 w-2 rounded-full bg-amber-500/50" />
+                          <span className="h-2 w-2 rounded-full bg-brand/50" />
+                        </div>
+                        <Image
+                          src={project.image}
+                          alt={project.imageAlt ?? project.name}
+                          width={1910}
+                          height={872}
+                          sizes="(min-width: 768px) 42rem, 100vw"
+                          className="h-auto w-full"
+                        />
+                      </figure>
+                    </Tilt3D>
+                  </Scroll3D>
                 ) : null}
 
                 <dl className="mt-6 space-y-4">

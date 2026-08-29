@@ -7,6 +7,7 @@ import { profile, socials } from "@/data/profile";
 import { marqueeItems } from "@/data/stack";
 import { iconMap } from "@/components/site/icons";
 import { Reveal } from "@/components/site/reveal";
+import { Scroll3D, Tilt3D } from "@/components/site/scroll-3d";
 
 /** Editor-style token colours that hold up in both themes. */
 const token = {
@@ -38,10 +39,18 @@ export function Hero() {
   return (
     <section className="relative isolate overflow-hidden">
       {/* Blueprint grid + soft glow */}
-      <div
-        aria-hidden
-        className="grid-backdrop pointer-events-none absolute inset-0 -z-10"
-      />
+      <Scroll3D
+        mode="exit"
+        start={0.08}
+        end={-0.92}
+        translateY={90}
+        translateZ={-260}
+        fade={0.7}
+        perspective={900}
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
+        <div aria-hidden className="grid-backdrop h-full w-full" />
+      </Scroll3D>
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[-18rem] -z-10 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-brand/10 blur-[120px]"
@@ -120,7 +129,7 @@ export function Hero() {
             </div>
           </Reveal>
 
-          <Reveal delay={300}>
+          <Reveal delay={300} depth>
             <dl className="mt-12 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-lg border border-border/80 bg-border/60">
               {profile.stats.map((stat) => (
                 <div key={stat.label} className="bg-background px-4 py-4">
@@ -158,104 +167,117 @@ export function Hero() {
         </div>
 
         {/* whoami.ts */}
-        <Reveal delay={200} className="lg:w-full lg:justify-self-end">
-          <div className="overflow-hidden rounded-xl border border-border/80 bg-card/70 shadow-2xl shadow-black/5 backdrop-blur-sm dark:shadow-black/40">
-            <div className="flex items-center gap-2 border-b border-border/70 bg-muted/40 px-4 py-2.5">
-              <span className="flex gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-destructive/60" />
-                <span className="h-2.5 w-2.5 rounded-full bg-amber-500/60" />
-                <span className="h-2.5 w-2.5 rounded-full bg-brand/60" />
-              </span>
-              <span className="ml-2 font-mono text-[11px] text-muted-foreground">
-                ~/{profile.handle}/whoami.ts
-              </span>
-            </div>
+        <Reveal delay={200} depth className="lg:w-full lg:justify-self-end">
+          <Scroll3D
+            mode="exit"
+            start={0.22}
+            end={-0.55}
+            rotateX={10}
+            translateY={70}
+            translateZ={-200}
+            fade={0.55}
+            perspective={1400}
+          >
+            <Tilt3D strength={5} perspective={1100}>
+              <div className="overflow-hidden rounded-xl border border-border/80 bg-card/70 shadow-2xl shadow-black/5 backdrop-blur-sm dark:shadow-black/40">
+                <div className="flex items-center gap-2 border-b border-border/70 bg-muted/40 px-4 py-2.5">
+                  <span className="flex gap-1.5">
+                    <span className="h-2.5 w-2.5 rounded-full bg-destructive/60" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-amber-500/60" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-brand/60" />
+                  </span>
+                  <span className="ml-2 font-mono text-[11px] text-muted-foreground">
+                    ~/{profile.handle}/whoami.ts
+                  </span>
+                </div>
 
-            <pre className="overflow-x-auto py-4 font-mono text-[12.5px] sm:text-[13px]">
-              <code>
-                <Line n={1}>
-                  <span className={token.comment}>{"// the short version"}</span>
-                </Line>
-                <Line n={2}>
-                  <span className={token.keyword}>const</span>{" "}
-                  <span className={token.name}>adham</span>{" "}
-                  <span className={token.punct}>= {"{"}</span>
-                </Line>
-                <Line n={3}>
-                  {"  "}
-                  <span className={token.prop}>role</span>
-                  <span className={token.punct}>: </span>
-                  <Str>{profile.role}</Str>
-                  <span className={token.punct}>,</span>
-                </Line>
-                <Line n={4}>
-                  {"  "}
-                  <span className={token.prop}>frontend</span>
-                  <span className={token.punct}>: [</span>
-                  <Str>TypeScript</Str>
-                  <span className={token.punct}>, </span>
-                  <Str>React</Str>
-                  <span className={token.punct}>, </span>
-                  <Str>Next.js</Str>
-                  <span className={token.punct}>],</span>
-                </Line>
-                <Line n={5}>
-                  {"  "}
-                  <span className={token.prop}>backend</span>
-                  <span className={token.punct}>: [</span>
-                  <Str>Hono</Str>
-                  <span className={token.punct}>, </span>
-                  <Str>Express</Str>
-                  <span className={token.punct}>, </span>
-                  <Str>GraphQL</Str>
-                  <span className={token.punct}>, </span>
-                  <Str>Flask</Str>
-                  <span className={token.punct}>],</span>
-                </Line>
-                <Line n={6}>
-                  {"  "}
-                  <span className={token.prop}>owns</span>
-                  <span className={token.punct}>: [</span>
-                  <Str>schema</Str>
-                  <span className={token.punct}>, </span>
-                  <Str>api</Str>
-                  <span className={token.punct}>, </span>
-                  <Str>ui</Str>
-                  <span className={token.punct}>, </span>
-                  <Str>deploy</Str>
-                  <span className={token.punct}>],</span>
-                </Line>
-                <Line n={7}>
-                  {"  "}
-                  <span className={token.prop}>runsOn</span>
-                  <span className={token.punct}>: </span>
-                  <Str>Cloudflare + Neon Postgres</Str>
-                  <span className={token.punct}>,</span>
-                </Line>
-                <Line n={8}>
-                  {"  "}
-                  <span className={token.prop}>available</span>
-                  <span className={token.punct}>: </span>
-                  <span className={token.literal}>
-                    {String(profile.available)}
-                  </span>
-                  <span className={token.punct}>,</span>
-                </Line>
-                <Line n={9}>
-                  <span className={token.punct}>{"}"} </span>
-                  <span className={token.keyword}>satisfies</span>{" "}
-                  <span className={token.name}>Engineer</span>
-                  <span className={token.punct}>;</span>
-                </Line>
-                <Line n={10} />
-                <Line n={11}>
-                  <span className={token.comment}>
-                    {"// press ⌘K to look around"}
-                  </span>
-                </Line>
-              </code>
-            </pre>
-          </div>
+                <pre className="overflow-x-auto py-4 font-mono text-[12.5px] sm:text-[13px]">
+                  <code>
+                    <Line n={1}>
+                      <span className={token.comment}>{"// the short version"}</span>
+                    </Line>
+                    <Line n={2}>
+                      <span className={token.keyword}>const</span>{" "}
+                      <span className={token.name}>adham</span>{" "}
+                      <span className={token.punct}>= {"{"}</span>
+                    </Line>
+                    <Line n={3}>
+                      {"  "}
+                      <span className={token.prop}>role</span>
+                      <span className={token.punct}>: </span>
+                      <Str>{profile.role}</Str>
+                      <span className={token.punct}>,</span>
+                    </Line>
+                    <Line n={4}>
+                      {"  "}
+                      <span className={token.prop}>frontend</span>
+                      <span className={token.punct}>: [</span>
+                      <Str>TypeScript</Str>
+                      <span className={token.punct}>, </span>
+                      <Str>React</Str>
+                      <span className={token.punct}>, </span>
+                      <Str>Next.js</Str>
+                      <span className={token.punct}>],</span>
+                    </Line>
+                    <Line n={5}>
+                      {"  "}
+                      <span className={token.prop}>backend</span>
+                      <span className={token.punct}>: [</span>
+                      <Str>Hono</Str>
+                      <span className={token.punct}>, </span>
+                      <Str>Express</Str>
+                      <span className={token.punct}>, </span>
+                      <Str>GraphQL</Str>
+                      <span className={token.punct}>, </span>
+                      <Str>Flask</Str>
+                      <span className={token.punct}>],</span>
+                    </Line>
+                    <Line n={6}>
+                      {"  "}
+                      <span className={token.prop}>owns</span>
+                      <span className={token.punct}>: [</span>
+                      <Str>schema</Str>
+                      <span className={token.punct}>, </span>
+                      <Str>api</Str>
+                      <span className={token.punct}>, </span>
+                      <Str>ui</Str>
+                      <span className={token.punct}>, </span>
+                      <Str>deploy</Str>
+                      <span className={token.punct}>],</span>
+                    </Line>
+                    <Line n={7}>
+                      {"  "}
+                      <span className={token.prop}>runsOn</span>
+                      <span className={token.punct}>: </span>
+                      <Str>Cloudflare + Neon Postgres</Str>
+                      <span className={token.punct}>,</span>
+                    </Line>
+                    <Line n={8}>
+                      {"  "}
+                      <span className={token.prop}>available</span>
+                      <span className={token.punct}>: </span>
+                      <span className={token.literal}>
+                        {String(profile.available)}
+                      </span>
+                      <span className={token.punct}>,</span>
+                    </Line>
+                    <Line n={9}>
+                      <span className={token.punct}>{"}"} </span>
+                      <span className={token.keyword}>satisfies</span>{" "}
+                      <span className={token.name}>Engineer</span>
+                      <span className={token.punct}>;</span>
+                    </Line>
+                    <Line n={10} />
+                    <Line n={11}>
+                      <span className={token.comment}>
+                        {"// press ⌘K to look around"}
+                      </span>
+                    </Line>
+                  </code>
+                </pre>
+              </div>
+            </Tilt3D>
+          </Scroll3D>
         </Reveal>
       </div>
 

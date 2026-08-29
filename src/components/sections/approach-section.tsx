@@ -17,6 +17,7 @@ export function ApproachSection() {
               as="li"
               key={principle.title}
               delay={index * 70}
+              depth
               className="bg-background p-6"
             >
               <span className="font-mono text-[11px] text-brand">
@@ -32,7 +33,7 @@ export function ApproachSection() {
           ))}
         </ol>
 
-        <Reveal delay={120}>
+        <Reveal delay={120} depth>
           <div className="rounded-lg border border-border/80 p-6">
             <div className="mb-5 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-brand" />
