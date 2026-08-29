@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -91,6 +92,24 @@ export function WorkSection() {
                 <p className="mt-1.5 text-sm text-muted-foreground">
                   {project.kicker}
                 </p>
+
+                {project.image ? (
+                  <figure className="mt-6 overflow-hidden rounded-lg border border-border/80 bg-muted/20">
+                    <div className="flex items-center gap-1.5 border-b border-border/70 bg-muted/40 px-3 py-2">
+                      <span className="h-2 w-2 rounded-full bg-destructive/50" />
+                      <span className="h-2 w-2 rounded-full bg-amber-500/50" />
+                      <span className="h-2 w-2 rounded-full bg-brand/50" />
+                    </div>
+                    <Image
+                      src={project.image}
+                      alt={project.imageAlt ?? project.name}
+                      width={1910}
+                      height={872}
+                      sizes="(min-width: 768px) 42rem, 100vw"
+                      className="h-auto w-full"
+                    />
+                  </figure>
+                ) : null}
 
                 <dl className="mt-6 space-y-4">
                   <div>
