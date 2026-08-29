@@ -67,10 +67,11 @@ export function Scroll3D({
   as: Tag = "div",
 }: Scroll3DProps) {
   const defaults = MODE_DEFAULTS[mode];
-  const ref = useScrollProgress<HTMLDivElement>(
-    { start: start ?? defaults.start, end: end ?? defaults.end },
-    defaults.rest
-  );
+  const ref = useScrollProgress<HTMLDivElement>({
+    start: start ?? defaults.start,
+    end: end ?? defaults.end,
+    rest: defaults.rest,
+  });
 
   return (
     <Tag

@@ -10,14 +10,29 @@ import * as React from "react";
  * the transforms that read `--p` stay on the compositor.
  */
 
-export type ScrollRange = {
+export type ScrollProgressOptions = {
   /** `--p` is 0 while the element top sits at this fraction of the viewport height. */
   start?: number;
   /** `--p` is 1 once the element top reaches this fraction of the viewport height. */
   end?: number;
+  /**
+   * The value to pin when motion is turned off — whichever end of the range is
+   * the element's undisturbed, neutral state.
+   */
+  rest?: number;
+  /**
+   * Called with every change, inside the rAF pass. For motion that CSS `calc()`
+   * cannot express; keep it cheap and write styles, not state.
+   */
+  onProgress?: (p: number) => void;
 };
 
-type Target = { start: number; end: number; last: number };
+type Target = {
+  start: number;
+  end: number;
+  last: number;
+  onProgress?: (p: number) => void;
+};
 
 const targets = new Map<HTMLElement, Target>();
 let frame = 0;
@@ -37,6 +52,7 @@ function measure() {
     if (Math.abs(p - target.last) < 0.001) return;
     target.last = p;
     el.style.setProperty("--p", p.toFixed(3));
+    target.onProgress?.(p);
   });
 }
 
@@ -55,10 +71,11 @@ function toggleListeners(on: boolean) {
 export function trackScrollProgress(
   el: HTMLElement,
   start: number,
-  end: number
+  end: number,
+  onProgress?: (p: number) => void
 ) {
   if (!targets.size) toggleListeners(true);
-  targets.set(el, { start, end, last: Number.NaN });
+  targets.set(el, { start, end, last: Number.NaN, onProgress });
   measure();
 
   return () => {
@@ -88,26 +105,32 @@ const useIsomorphicLayoutEffect =
 /**
  * Drives `--p` on the returned ref as the element travels the viewport.
  *
- * @param restProgress the value to pin when motion is turned off — whichever
- *   end of the range is the element's undisturbed, neutral state.
+ * When motion is off the element is pinned at `rest` and `onProgress` never
+ * fires, so anything it would have driven falls back to plain stylesheet rules.
  */
-export function useScrollProgress<T extends HTMLElement>(
-  { start = 0.95, end = 0.45 }: ScrollRange = {},
-  restProgress = 1
-) {
+export function useScrollProgress<T extends HTMLElement>({
+  start = 0.95,
+  end = 0.45,
+  rest = 1,
+  onProgress,
+}: ScrollProgressOptions = {}) {
   const ref = React.useRef<T>(null);
+
+  // Kept in a ref so callers need not memoise the callback.
+  const handler = React.useRef(onProgress);
+  handler.current = onProgress;
 
   useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     if (prefersReducedMotion() || typeof requestAnimationFrame === "undefined") {
-      el.style.setProperty("--p", String(restProgress));
+      el.style.setProperty("--p", String(rest));
       return;
     }
 
-    return trackScrollProgress(el, start, end);
-  }, [start, end, restProgress]);
+    return trackScrollProgress(el, start, end, (p) => handler.current?.(p));
+  }, [start, end, rest]);
 
   return ref;
 }

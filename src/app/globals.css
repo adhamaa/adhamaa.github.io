@@ -189,6 +189,58 @@
       rotateY(calc(var(--mx, 0) * var(--tilt, 6) * 1deg));
     transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  /* --- Pinned scroll section ----------------------------------------------
+     The section is `--screens` viewports tall and its panel sticks for all but
+     the last one, which is the stretch the layer stack scrubs through. */
+  .pin-section {
+    position: relative;
+    height: calc(var(--screens, 4) * 100vh);
+    height: calc(var(--screens, 4) * 100svh);
+  }
+
+  .pin-viewport {
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100vh;
+    height: 100svh;
+    align-items: center;
+    overflow: hidden;
+    /* Clear the sticky nav so the panel centres in the space below it. */
+    padding-top: 4rem;
+  }
+
+  .pin-stage {
+    perspective: 1200px;
+  }
+
+  /* Every slab shares one grid cell, so the transforms are pure depth. */
+  .pin-stack {
+    display: grid;
+    place-items: center;
+    transform-style: preserve-3d;
+  }
+
+  .pin-slab {
+    grid-area: 1 / 1;
+    width: 100%;
+    transform-style: preserve-3d;
+  }
+
+  .pin-copy-deck {
+    position: relative;
+  }
+
+  .pin-copy {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .pin-copy.is-active {
+    opacity: 1;
+  }
 }
 
 @layer utilities {
@@ -214,6 +266,35 @@
   .layer-3d,
   .tilt-3d {
     transform: none !important;
+    opacity: 1 !important;
+  }
+  /* Unpin: the section becomes a plain column of layers, in order. */
+  .pin-section {
+    height: auto !important;
+  }
+  .pin-viewport {
+    position: static !important;
+    display: block !important;
+    height: auto !important;
+    padding-block: 5rem;
+  }
+  .pin-stack {
+    height: auto !important;
+    gap: 1rem;
+  }
+  .pin-slab {
+    grid-area: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .pin-copy-deck {
+    display: grid;
+    gap: 1.75rem;
+    min-height: 0 !important;
+  }
+  .pin-copy {
+    position: static !important;
     opacity: 1 !important;
   }
   *,
