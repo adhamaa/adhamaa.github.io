@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/adhamaa/adhamaa.github.io/compare/v1.4.0...v1.5.0) (2026-08-29)
+
+
+### Features
+
+* add a pinned scroll section for the delivery pipeline ([fc2c7f7](https://github.com/adhamaa/adhamaa.github.io/commit/fc2c7f784c137c069c76e2c96c2ffbcb5bac35e9))
+* add scroll-driven 3D depth to the home page ([70b0b79](https://github.com/adhamaa/adhamaa.github.io/commit/70b0b797ce3c6182e7d8dfcd99857682c6591854))
+
 ## [1.4.0](https://github.com/adhamaa/adhamaa/compare/v1.3.7...v1.4.0) (2023-12-30)
 
 
