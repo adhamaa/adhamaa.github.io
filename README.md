@@ -57,21 +57,21 @@ Change `src/data/*.ts` — not the components. The pages read from those files, 
 
 ## Local development
 
-CI installs with **yarn** (the workflow detects `yarn.lock` first), so prefer it locally for parity:
+CI installs with **pnpm** from `pnpm-lock.yaml`, so use it locally too:
 
 ```bash
-yarn install
-yarn dev
+pnpm install
+pnpm dev
 ```
 
 Then open http://localhost:3000.
 
 ```bash
-yarn build   # static export to out/
-yarn lint    # eslint, same rules CI enforces
+pnpm build   # static export to out/
+pnpm lint    # eslint, same rules CI enforces
 ```
 
-> **Note:** both `yarn.lock` and `pnpm-lock.yaml` are committed. CI uses yarn. Installing with pnpm works but resolves slightly different patch versions, so a build that passes locally under pnpm is not proof CI will pass — run `yarn lint` before pushing.
+> **Note:** `pnpm-lock.yaml` is the only lockfile, and the pnpm version is pinned by the `packageManager` field in `package.json`. CI installs with `--frozen-lockfile`, so commit the lockfile alongside any dependency change or the deploy will fail.
 
 ## Deployment
 
