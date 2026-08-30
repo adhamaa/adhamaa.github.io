@@ -42,6 +42,12 @@ jobs:
         # --with-deps also installs the system libraries Chromium needs on the
         # runner; those live outside the cached browser directory.
         run: pnpm exec playwright install --with-deps chromium
+      - name: Lint
+        # Next 16 removed linting from `next build`, so without this step ESLint
+        # silently stops running rather than failing.
+        run: pnpm run lint
+      - name: Typecheck
+        run: pnpm run typecheck
       - name: Build the static export
         run: pnpm run build
       - name: Run the smoke suite
