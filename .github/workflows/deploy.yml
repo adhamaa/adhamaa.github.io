@@ -63,6 +63,10 @@ jobs:
 
   # Deployment job
   deploy:
+    # Only master may publish to Pages; the github-pages environment enforces this
+    # too, so without the guard a workflow_dispatch on any other branch queues a
+    # deploy that is rejected on sight and reds the whole run.
+    if: github.ref == 'refs/heads/master'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
