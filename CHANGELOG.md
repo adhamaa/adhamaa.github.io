@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0](https://github.com/adhamaa/adhamaa.github.io/compare/v1.5.0...v1.6.0) (2026-08-30)
+
+
+### Features
+
+* adopt v11's résumé design, demote cover letter from main nav ([#23](https://github.com/adhamaa/adhamaa.github.io/issues/23)) ([26233e5](https://github.com/adhamaa/adhamaa.github.io/commit/26233e533b0b4f52a8c80d13fa4c81201cfdf789))
+* sync résumé to v11, add an open cover letter ([#21](https://github.com/adhamaa/adhamaa.github.io/issues/21)) ([d8cf4bc](https://github.com/adhamaa/adhamaa.github.io/commit/d8cf4bcfd04d00d04fb9a3e66eb3354f5359f1ff))
+
 ## [1.5.0](https://github.com/adhamaa/adhamaa.github.io/compare/v1.4.0...v1.5.0) (2026-08-29)
 
 
