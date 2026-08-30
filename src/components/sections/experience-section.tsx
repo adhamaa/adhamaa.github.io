@@ -23,8 +23,8 @@ export function ExperienceSection() {
               aria-hidden
               className={
                 role.current
-                  ? "absolute -left-[26px] top-2 h-2.5 w-2.5 rounded-full bg-brand ring-4 ring-background sm:-left-[42px]"
-                  : "absolute -left-[26px] top-2 h-2.5 w-2.5 rounded-full border border-border bg-background ring-4 ring-background sm:-left-[42px]"
+                  ? "absolute left-[-26px] top-2 h-2.5 w-2.5 rounded-full bg-brand ring-4 ring-background sm:left-[-42px]"
+                  : "absolute left-[-26px] top-2 h-2.5 w-2.5 rounded-full border border-border bg-background ring-4 ring-background sm:left-[-42px]"
               }
             />
 

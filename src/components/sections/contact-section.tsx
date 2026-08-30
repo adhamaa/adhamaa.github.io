@@ -13,7 +13,7 @@ export function ContactSection() {
     >
       <div
         aria-hidden
-        className="dotted pointer-events-none absolute inset-0 -z-10 opacity-60 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000,transparent)]"
+        className="dotted pointer-events-none absolute inset-0 -z-10 opacity-60 mask-[radial-gradient(ellipse_60%_60%_at_50%_50%,#000,transparent)]"
       />
 
       <div className="flex items-baseline gap-4">

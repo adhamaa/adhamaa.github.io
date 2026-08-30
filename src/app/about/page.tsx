@@ -27,7 +27,7 @@ export default function About() {
     <div className="relative">
       <div
         aria-hidden
-        className="grid-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[28rem]"
+        className="grid-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-112"
       />
 
       <div className="container py-16 sm:py-24">
