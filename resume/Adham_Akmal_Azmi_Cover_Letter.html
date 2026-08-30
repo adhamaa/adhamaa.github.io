@@ -9,10 +9,21 @@
         The prose here is the same letter as src/data/cover-letter.ts, which the
         /cover-letter page renders — change both together.
 
+        Header/footer styling matches resume/Adham_Akmal_Azmi_Resume.html's
+        v11-inspired accent (see that file for the rationale); a letter is
+        prose, so it carries none of the résumé's pill/sidebar layout.
+
         Regenerate:
         msedge --headless --disable-gpu --print-to-pdf="public/Adham_Akmal_Azmi_Cover_Letter.pdf" \
           --no-pdf-header-footer "file:///<abs-path>/resume/Adham_Akmal_Azmi_Cover_Letter.html"
       */
+      :root {
+        --accent: #5b3e96;
+        --ink: #1d1e24;
+        --muted: #5b5f6b;
+        --rule: #e2e4ea;
+      }
+
       @page {
         size: A4;
         margin: 16mm 17mm;
@@ -33,16 +44,16 @@
         font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         font-size: 10pt;
         line-height: 1.55;
-        color: #16181d;
+        color: var(--ink);
       }
 
       a {
-        color: #0f766e;
+        color: var(--accent);
         text-decoration: none;
       }
 
       header {
-        border-bottom: 1.5pt solid #0f766e;
+        border-bottom: 2pt solid var(--accent);
         padding-bottom: 7pt;
         margin-bottom: 14pt;
       }
@@ -50,8 +61,9 @@
       h1 {
         margin: 0;
         font-size: 20pt;
-        letter-spacing: 0.4pt;
-        font-weight: 700;
+        letter-spacing: 0.3pt;
+        font-weight: 800;
+        color: var(--accent);
         text-transform: uppercase;
       }
 
@@ -59,19 +71,19 @@
         margin: 3pt 0 5pt;
         font-size: 10.5pt;
         font-weight: 600;
-        color: #0f766e;
+        color: var(--ink);
         letter-spacing: 0.2pt;
       }
 
       .contact {
         font-size: 8.8pt;
-        color: #454b57;
+        color: var(--muted);
         margin: 0;
       }
 
       .contact span::after {
         content: "  ·  ";
-        color: #9aa1ad;
+        color: #b7bac4;
       }
 
       .contact span:last-child::after {
@@ -80,7 +92,7 @@
 
       .dated {
         font-size: 8.8pt;
-        color: #454b57;
+        color: var(--muted);
         margin: 0 0 12pt;
       }
 
@@ -105,9 +117,9 @@
       footer {
         margin-top: 16pt;
         padding-top: 7pt;
-        border-top: 0.6pt solid #d6dae1;
+        border-top: 0.6pt solid var(--rule);
         font-size: 8.4pt;
-        color: #454b57;
+        color: var(--muted);
       }
     </style>
   </head>
