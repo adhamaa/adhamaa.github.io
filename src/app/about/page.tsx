@@ -169,13 +169,20 @@ export default function About() {
             <Reveal>
               <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border/80 p-6">
                 <p className="mr-auto text-sm text-muted-foreground">
-                  Want the systems I&apos;ve shipped, or the one-page version?
+                  Want the systems I&apos;ve shipped, the letter that goes
+                  with this, or the one-page version?
                 </p>
                 <Link
                   href="/#work"
                   className="inline-flex h-10 items-center gap-2 rounded-md border border-border px-4 text-sm transition-colors hover:border-brand/50 hover:bg-muted/50"
                 >
                   See the work
+                </Link>
+                <Link
+                  href="/cover-letter"
+                  className="inline-flex h-10 items-center gap-2 rounded-md border border-border px-4 text-sm transition-colors hover:border-brand/50 hover:bg-muted/50"
+                >
+                  Cover letter
                 </Link>
                 <a
                   href={profile.resumeUrl}
