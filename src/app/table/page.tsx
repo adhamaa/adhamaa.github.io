@@ -13,25 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-type Deployment = {
-  id: string;
-  branch: string;
-  env: "production" | "preview";
-  status: "ready" | "building" | "error";
-  duration: string;
-  commit: string;
-};
-
-const deployments: Deployment[] = [
-  { id: "dpl_9fa21", branch: "main", env: "production", status: "ready", duration: "48s", commit: "feat: command palette" },
-  { id: "dpl_9f8c4", branch: "feat/stack-grid", env: "preview", status: "ready", duration: "41s", commit: "refactor: token colours" },
-  { id: "dpl_9f7b0", branch: "fix/marquee", env: "preview", status: "error", duration: "12s", commit: "fix: reduced-motion guard" },
-  { id: "dpl_9f6aa", branch: "main", env: "production", status: "ready", duration: "52s", commit: "chore: bump next" },
-  { id: "dpl_9f512", branch: "feat/about", env: "preview", status: "building", duration: "—", commit: "wip: about rail" },
-  { id: "dpl_9f4d8", branch: "feat/seo", env: "preview", status: "ready", duration: "39s", commit: "feat: metadata + og" },
-  { id: "dpl_9f3c1", branch: "main", env: "production", status: "ready", duration: "45s", commit: "feat: dark-first tokens" },
-];
+import {
+  deploymentColumns,
+  deployments,
+  type Deployment,
+  type DeploymentColumnId,
+} from "@/data/deployments";
 
 const statusStyles: Record<Deployment["status"], string> = {
   ready: "border-brand/40 text-brand",
@@ -39,25 +26,16 @@ const statusStyles: Record<Deployment["status"], string> = {
   error: "border-destructive/40 text-destructive",
 };
 
-const columns = [
-  { id: "id", label: "Deployment" },
-  { id: "commit", label: "Commit" },
-  { id: "branch", label: "Branch" },
-  { id: "env", label: "Env" },
-  { id: "status", label: "Status" },
-  { id: "duration", label: "Duration" },
-] as const;
+const pagerButton =
+  "inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-40";
 
 const PAGE_SIZE = 5;
 
 export default function LabPage() {
   const [filter, setFilter] = React.useState("");
   const [page, setPage] = React.useState(0);
-  const [sort, setSort] = React.useState<SortDescriptor>({
-    column: "id",
-    direction: "ascending",
-  });
-  const [sorted, setSorted] = React.useState(false);
+  /** Null until the visitor sorts, which is also React Aria's "unsorted". */
+  const [sort, setSort] = React.useState<SortDescriptor | null>(null);
 
   // Seven static rows: filtering, sorting and paging are cheaper to do here
   // than to hand to a table library.
@@ -70,11 +48,11 @@ export default function LabPage() {
   }, [filter]);
 
   const rows = React.useMemo(() => {
-    if (!sorted) return filtered;
-    const key = sort.column as keyof Deployment;
+    if (!sort) return filtered;
+    const key = sort.column as DeploymentColumnId;
     const ordered = [...filtered].sort((a, b) => a[key].localeCompare(b[key]));
     return sort.direction === "descending" ? ordered.reverse() : ordered;
-  }, [filtered, sort, sorted]);
+  }, [filtered, sort]);
 
   const pageCount = Math.max(Math.ceil(rows.length / PAGE_SIZE), 1);
   const currentPage = Math.min(page, pageCount - 1);
@@ -82,12 +60,6 @@ export default function LabPage() {
     currentPage * PAGE_SIZE,
     currentPage * PAGE_SIZE + PAGE_SIZE
   );
-
-  const onSortChange = (descriptor: SortDescriptor) => {
-    setSorted(true);
-    setSort(descriptor);
-    setPage(0);
-  };
 
   return (
     <div className="relative">
@@ -136,12 +108,15 @@ export default function LabPage() {
           <div className="overflow-x-auto">
             <Table
               aria-label="Deployments"
-              sortDescriptor={sorted ? sort : undefined}
-              onSortChange={onSortChange}
+              sortDescriptor={sort ?? undefined}
+              onSortChange={(descriptor) => {
+                setSort(descriptor);
+                setPage(0);
+              }}
             >
               <TableHeader className="border-b border-border/70">
-                {columns.map((column) => {
-                  const active = sorted && sort.column === column.id;
+                {deploymentColumns.map((column) => {
+                  const active = sort?.column === column.id;
                   return (
                     <TableHead
                       key={column.id}
@@ -172,12 +147,8 @@ export default function LabPage() {
                 )}
               >
                 {visible.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    id={row.id}
-                    className="border-b border-border/70 transition-colors hover:bg-muted/40"
-                  >
-                    {columns.map((column) => (
+                  <TableRow key={row.id} id={row.id} className="border-border/70">
+                    {deploymentColumns.map((column) => (
                       <TableCell
                         key={column.id}
                         className="px-4 py-4 font-mono text-xs text-muted-foreground"
@@ -211,7 +182,7 @@ export default function LabPage() {
                 type="button"
                 onClick={() => setPage((value) => Math.max(value - 1, 0))}
                 disabled={currentPage === 0}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+                className={pagerButton}
                 aria-label="Previous page"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -222,7 +193,7 @@ export default function LabPage() {
                   setPage((value) => Math.min(value + 1, pageCount - 1))
                 }
                 disabled={currentPage >= pageCount - 1}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+                className={pagerButton}
                 aria-label="Next page"
               >
                 <ChevronRight className="h-4 w-4" />
