@@ -20,7 +20,7 @@
     "@mantine/hooks": "^6.0.19",
     "@radix-ui/react-dialog": "^1.1.23",
     "@tabler/icons-react": "^2.30.0",
-    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/postcss": "4.3.3",
     "@types/node": "20.5.0",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",

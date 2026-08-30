@@ -2,19 +2,11 @@
 @import "tw-animate-css";
 
 /*
-  Everything below replaces `tailwind.config.ts`, which v4 no longer needs.
+  Replaces `tailwind.config.ts`. See docs/adr/0002 for the v4 decision.
 
-  The palette itself is untouched: `:root` and `.dark` further down still hold
-  bare HSL triplets like `--brand: 158 72% 30%`. That matters — half the tokens
-  are also consumed as raw CSS (`hsl(var(--brand) / 0.25)` in `::selection`,
-  `hsl(var(--grid))` in the blueprint grid), and wrapping the variable in
-  `hsl()` the way shadcn's v4 template does would make those call sites read
-  `hsl(hsl(...) / 0.25)`, which is not a colour.
-
-  So the `hsl()` wrapper stays where it was in v3 — on Tailwind's side of the
-  boundary — and only moves from the JS config into `@theme inline`. `inline`
-  is required: it inlines the wrapper into each utility, so `bg-brand` resolves
-  `--brand` at the point of use and keeps picking up the `.dark` override.
+  `inline` is load-bearing throughout: the palette stays as bare HSL triplets
+  (raw CSS reads `hsl(var(--brand) / 0.25)`), so the `hsl()` wrapper must be
+  substituted at the utility, not declared on `:root`.
 */
 
 /* v3 read `darkMode: ["class"]`; v4 defaults to prefers-color-scheme. */
@@ -51,13 +43,8 @@
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
-  /*
-    These must be `inline`. next/font declares --font-inter on <body>, while a
-    plain @theme would declare --font-sans on :root and resolve var(--font-inter)
-    there, where it does not exist — silently dropping the whole stack to v4's
-    default sans. Inlining substitutes at the utility, on the element that
-    actually inherits the variable, which is what v3 emitted.
-  */
+  /* next/font declares --font-inter on <body>, so this must resolve at the
+     utility, not on :root, or the stack falls back to v4's default sans. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
 
@@ -147,12 +134,8 @@
   }
 }
 
-/*
-  v4 dropped `theme.container` entirely, and its built-in `container` is just a
-  set of responsive max-widths — no centring, no padding. Left alone, every
-  `.container` on the site would go full-bleed and lose its gutters. This
-  restores the v3 configuration: centred, 1.5rem of padding, capped at 1200px.
-*/
+/* v4 dropped `theme.container`; its built-in is max-widths only, with no
+   centring or padding. This restores the v3 configuration. */
 @utility container {
   width: 100%;
   /* v4 ships responsive max-widths on its built-in container; v3 replaced them
@@ -289,20 +272,6 @@
   &.is-active {
     opacity: 1;
   }
-}
-
-@utility is-active {
-  &.pin-copy {
-    opacity: 1;
-  }
-}
-
-@utility text-balance {
-  text-wrap: balance;
-}
-
-@utility text-pretty {
-  text-wrap: pretty;
 }
 
 @utility dotted {
