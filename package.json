@@ -8,6 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "next build && playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "clean": "rm -rf .next node_modules out"
   },
   "dependencies": {
@@ -73,5 +76,8 @@
     "typescript": "5.1.6",
     "vaul": "^0.8.0",
     "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
   }
 }

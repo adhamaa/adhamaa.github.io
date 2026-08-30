@@ -67,11 +67,21 @@ pnpm dev
 Then open http://localhost:3000.
 
 ```bash
-pnpm build   # static export to out/
-pnpm lint    # eslint, same rules CI enforces
+pnpm build       # static export to out/
+pnpm lint        # eslint, same rules CI enforces
+pnpm typecheck   # tsc --noEmit
+pnpm test:e2e    # build, then drive a browser over out/
 ```
 
 > **Note:** `pnpm-lock.yaml` is the only lockfile, and the pnpm version is pinned by the `packageManager` field in `package.json`. CI installs with `--frozen-lockfile`, so commit the lockfile alongside any dependency change or the deploy will fail.
+
+## Tests
+
+`e2e/` holds a Playwright smoke suite that drives a real browser against the built static export in `out/` — the exact artifact that deploys. It asserts only what a visitor can see: headings, rows, sorting, search. It deliberately avoids class names, DOM structure and component markup, so it stays useful across framework and styling upgrades rather than failing on them.
+
+`pnpm test:e2e` builds and runs it. With a build already in `out/`, `pnpm exec playwright test` skips the rebuild, and `pnpm test:e2e:ui` opens the interactive runner. The static server under `e2e/` is plain Node with no dependencies, for the same reason.
+
+`.github/workflows/ci.yml` runs the suite on every pull request.
 
 ## Deployment
 
