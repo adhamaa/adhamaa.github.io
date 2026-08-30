@@ -118,9 +118,11 @@ export const navLinks = [
   { label: "Lab", href: "/table" },
 ] as const;
 
+/** In-page anchors offered by the command palette. */
 export const sectionLinks = [
-  { label: "Work", href: "/#work" },
+  { label: "Selected work", href: "/#work" },
   { label: "Experience", href: "/#experience" },
   { label: "Stack", href: "/#stack" },
+  { label: "How I work", href: "/#approach" },
   { label: "Contact", href: "/#contact" },
 ] as const;

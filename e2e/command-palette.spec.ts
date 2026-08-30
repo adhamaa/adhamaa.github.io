@@ -14,6 +14,13 @@ const paletteInput = (page: Page) => page.getByPlaceholder(palettePlaceholder);
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Adham Akmal Azmi." })).toBeVisible();
+
+  // The shortcut is bound in an effect, so pressing it before hydration does
+  // nothing. The theme toggle only names a direction once mounted, which makes
+  // it the page's own signal that client code is running.
+  await expect(
+    page.getByRole("button", { name: /Switch to (light|dark) theme/ })
+  ).toBeVisible();
 });
 
 test.describe("command palette", () => {

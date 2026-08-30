@@ -28,7 +28,7 @@ A one-page portfolio plus an about page and a component lab, built dark-first wi
 | Framework | Next.js 16, App Router, static export |
 | Language | TypeScript, React 19 |
 | Styling | Tailwind CSS with CSS-variable design tokens, dark-first |
-| Primitives | Radix UI / shadcn-style components in `src/components/ui` |
+| Primitives | React Aria Components via shadcn, in `src/components/ui` (see ADR 0001) |
 | Fonts | Inter + JetBrains Mono via `next/font` |
 | Table demo | Mantine React Table, driven headlessly against custom markup |
 | Hosting | GitHub Pages via GitHub Actions |
@@ -41,7 +41,7 @@ src/
   components/
     sections/       home page sections (hero, work, experience, stack, contact)
     site/           chrome: nav, footer, command palette, reveal, icons
-    ui/             the four reachable shadcn primitives
+    ui/             shadcn primitives on React Aria
   data/             ← the content layer, edit this first
     profile.ts      identity, tagline, stats, capabilities, principles
     projects.ts     selected work: problem / what I built / highlights

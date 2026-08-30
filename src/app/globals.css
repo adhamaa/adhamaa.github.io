@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 /*
   Replaces `tailwind.config.ts`. See docs/adr/0002 for the v4 decision.
