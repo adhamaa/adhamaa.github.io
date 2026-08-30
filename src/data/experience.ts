@@ -17,17 +17,17 @@ export const experience: Role[] = [
     title: "Application Engineer / Full-Stack Engineer",
     company: "Shinkels Technik Sdn Bhd",
     location: "Johor Bahru, Malaysia",
-    period: "Jul 2022 — Present",
-    current: true,
+    period: "Jul 2022 — Aug 2026",
     summary:
-      "Leading frontend architecture and writing the services behind it, across several client-facing web applications.",
+      "Led frontend architecture and wrote the services behind it, across several client-facing web applications.",
     points: [
       "Architected reusable React component libraries shared across multiple projects, cutting the time to stand up a new screen from days to hours.",
       "Designed and shipped backend services in Node.js and Express — REST and GraphQL endpoints covering authentication, authorization and integration with both SQL and NoSQL stores.",
       "Built Python Flask APIs for services better suited to the Python ecosystem, and kept their contracts consistent with the Node side.",
-      "Owned application state strategy (Redux, Context API, React Router) for maintainable single-page apps that stay fast as they grow.",
-      "Ran CI/CD and release operations (Git, PM2, Docker, Linux) so deployments are routine rather than events.",
-      "Adopted AI pair-programming into the daily workflow without leaning on it — generated code is a first draft that I read line by line, correct to our standards and optimise before it ever reaches review.",
+      "Owned application state strategy (Redux, Context API, React Router) for maintainable single-page apps that stayed fast as they grew.",
+      "Translated UX wireframes into responsive, cross-browser interfaces that behaved consistently on desktop and mobile.",
+      "Ran CI/CD and release operations (Git, PM2, Docker, Linux) so deployments were routine rather than events.",
+      "Adopted AI pair-programming into the daily workflow without leaning on it — generated code was a first draft I read line by line, corrected to our standards and optimised before it ever reached review.",
       "Set coding standards, led code reviews and mentored junior developers.",
     ],
     stack: [
@@ -49,7 +49,7 @@ export const experience: Role[] = [
     title: "Software Developer",
     company: "Rhingle Sdn Bhd",
     location: "Kuala Lumpur, Malaysia",
-    period: "Jul 2021 — Jun 2022",
+    period: "Jul 2021 — Jul 2022",
     summary:
       "Feature and maintenance work on production web applications inside a cross-functional team.",
     points: [
@@ -80,9 +80,14 @@ export const experience: Role[] = [
 
 export const education = [
   {
-    title: "Responsive Web Design · JavaScript Algorithms & Data Structures",
+    title: "JavaScript Algorithms & Data Structures",
     org: "freeCodeCamp",
     year: "2020",
+  },
+  {
+    title: "Responsive Web Design",
+    org: "freeCodeCamp",
+    year: "2019",
   },
   {
     title: "Degree, Islamic Studies with Management",

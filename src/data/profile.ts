@@ -12,11 +12,12 @@ export const profile = {
   location: "Pahang, Malaysia",
   timezone: "GMT+8",
   available: true,
-  availableLabel: "Open to full-time & contract",
+  availableLabel: "Available now — full-time or contract",
   email: "adham_92@live.com",
   phone: "+60 12-298 7734",
   siteUrl: "https://adhamaa.github.io",
   resumeUrl: "/Adham_Akmal_Azmi_Resume.pdf",
+  coverLetterUrl: "/Adham_Akmal_Azmi_Cover_Letter.pdf",
 
   tagline:
     "I ship business software end to end — the interface, the API behind it, and the edge infrastructure it runs on. Three production platforms, all built solo.",
@@ -25,12 +26,12 @@ export const profile = {
   stats: [
     { value: "5+", label: "Years shipping production software" },
     { value: "3", label: "Platforms built solo, schema to deploy" },
-    { value: "2022→", label: "Leading frontend at Shinkels Technik" },
+    { value: "2022–26", label: "Led frontend at Shinkels Technik" },
   ],
 
   bio: [
     "I'm a full-stack engineer based in Malaysia, five years into building software that companies actually run on. Three of those systems are my own products — an accounting and HR platform, a clinic case-management app and a certificate registry — all live, all built by me from the schema up to the last piece of UI.",
-    "The through-line is ownership. I'm comfortable designing a Postgres schema in the morning, writing the Hono API against it at lunch, and shipping the React screens that consume it before the day is out — then owning the deploy, the bugs, and the next iteration. Day to day I lead frontend architecture at Shinkels Technik, write REST and GraphQL services in Node and Python, and review the team's code.",
+    "The through-line is ownership. I'm comfortable designing a Postgres schema in the morning, writing the Hono API against it at lunch, and shipping the React screens that consume it before the day is out — then owning the deploy, the bugs, and the next iteration. For four years I led frontend architecture at Shinkels Technik, wrote REST and GraphQL services in Node and Python, and reviewed the team's code; that role closed in August 2026 and I'm looking for the next one.",
   ],
 
   /** What a client or hiring manager can hand me on day one. */
@@ -115,6 +116,7 @@ export const socials: SocialLink[] = [
 export const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Cover letter", href: "/cover-letter" },
   { label: "Lab", href: "/table" },
 ] as const;
 
