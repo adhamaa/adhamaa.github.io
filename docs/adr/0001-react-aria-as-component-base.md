@@ -23,3 +23,32 @@ When this repo says "the base", it means the primitive library: React Aria.
 - **`cmdk` is dropped.** React Aria's answer to the command palette is `Autocomplete`, so `command.tsx` is a rewrite rather than a regeneration.
 - **`sonner` stays.** It is React Aria's official toast answer as well as Radix's; the registry's `toast` component is Base-UI-only.
 - Focus rings, hover affordances and keyboard behaviour change by design. Visual parity was explicitly *not* required for this migration.
+
+## What the CLI actually does — corrected on implementation
+
+This ADR, and the ticket that implemented it, assumed `components.json` carries a
+`base` field that `shadcn init --base aria` would flip. **It does not.** The
+published schema's top-level keys are `style`, `tailwind`, `rsc`, `tsx`,
+`iconLibrary`, `aliases`, `menuColor`, `menuAccent`, `rtl`, `registries` — there
+is no `base` anywhere, and writing one is rejected as an invalid configuration.
+
+The base is encoded inside `style`, whose enum is `default`, `new-york`, and 24
+values of the form `<base>-<preset>`: `radix-nova`, `base-nova`, `aria-nova` and
+so on. The CLI decomposes `aria-nova` into `base: aria` plus the `nova` preset.
+
+Three consequences:
+
+- **The base and the design preset are one field.** React Aria cannot be selected
+  without also adopting a named style. The parent spec's "initialization runs
+  with the base flag only" is not achievable.
+- **The legacy `default` style resolves to `base: radix`**, which is why this
+  project reported a Radix base despite having no base field.
+- **Initialization rewrites the stylesheet.** This settles a source conflict the
+  research left open. It appends a second `:root`/`.dark` pair holding a neutral
+  greyscale OKLCH palette that overrides the emerald one, moves `--radius` from
+  `0.4rem` to `0.625rem`, injects Geist into the root layout, and rewrites
+  `--font-sans` to the self-referential `var(--font-sans)`.
+
+The identity was restored by hand afterwards and verified with a per-element
+layout fingerprint of all three routes: identical page heights, zero differing
+elements on `/about` and `/table`.
