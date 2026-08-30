@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import {
+  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -34,6 +35,14 @@ export const OPEN_COMMAND_MENU = "open-command-menu";
 export function openCommandMenu() {
   window.dispatchEvent(new CustomEvent(OPEN_COMMAND_MENU));
 }
+
+const jumpLinks = [
+  { label: "Selected work", href: "/#work" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Stack", href: "/#stack" },
+  { label: "How I work", href: "/#approach" },
+  { label: "Contact", href: "/#contact" },
+];
 
 export function CommandMenu() {
   const [open, setOpen] = React.useState(false);
@@ -64,106 +73,108 @@ export function CommandMenu() {
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Type a command or search…" />
-      <CommandList>
-        <CommandEmpty>No results.</CommandEmpty>
-
-        <CommandGroup heading="Navigate">
-          <CommandItem onSelect={() => run(() => router.push("/"))}>
-            <Home className="mr-2 h-4 w-4" />
-            Home
-          </CommandItem>
-          <CommandItem onSelect={() => run(() => router.push("/about"))}>
-            <User className="mr-2 h-4 w-4" />
-            About
-          </CommandItem>
-          <CommandItem onSelect={() => run(() => router.push("/table"))}>
-            <Terminal className="mr-2 h-4 w-4" />
-            Lab
-          </CommandItem>
-        </CommandGroup>
-
-        <CommandSeparator />
-
-        <CommandGroup heading="Jump to">
-          {[
-            { label: "Selected work", href: "/#work" },
-            { label: "Experience", href: "/#experience" },
-            { label: "Stack", href: "/#stack" },
-            { label: "How I work", href: "/#approach" },
-            { label: "Contact", href: "/#contact" },
-          ].map((item) => (
-            <CommandItem
-              key={item.href}
-              onSelect={() => run(() => router.push(item.href))}
-            >
-              <span className="mr-2 font-mono text-xs text-brand">#</span>
-              {item.label}
+      <Command>
+        <CommandInput placeholder="Type a command or search…" />
+        {/*
+          React Aria's menu owns the empty state rather than accepting a sibling
+          the way cmdk did, so the "no results" copy is handed to it as a render
+          prop instead of sitting in the list.
+        */}
+        <CommandList renderEmptyState={() => <CommandEmpty>No results.</CommandEmpty>}>
+          <CommandGroup heading="Navigate">
+            <CommandItem textValue="Home" onAction={() => run(() => router.push("/"))}>
+              <Home className="mr-2 h-4 w-4" />
+              Home
             </CommandItem>
-          ))}
-        </CommandGroup>
+            <CommandItem textValue="About" onAction={() => run(() => router.push("/about"))}>
+              <User className="mr-2 h-4 w-4" />
+              About
+            </CommandItem>
+            <CommandItem textValue="Lab" onAction={() => run(() => router.push("/table"))}>
+              <Terminal className="mr-2 h-4 w-4" />
+              Lab
+            </CommandItem>
+          </CommandGroup>
 
-        <CommandSeparator />
+          <CommandSeparator />
 
-        <CommandGroup heading="Connect">
-          {socials.map((social) => (
+          <CommandGroup heading="Jump to">
+            {jumpLinks.map((item) => (
+              <CommandItem
+                key={item.href}
+                textValue={item.label}
+                onAction={() => run(() => router.push(item.href))}
+              >
+                <span className="mr-2 font-mono text-xs text-brand">#</span>
+                {item.label}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+
+          <CommandSeparator />
+
+          <CommandGroup heading="Connect">
+            {socials.map((social) => (
+              <CommandItem
+                key={social.name}
+                textValue={`${social.name} ${social.handle}`}
+                onAction={() =>
+                  run(() => window.open(social.href, "_blank", "noopener,noreferrer"))
+                }
+              >
+                <ArrowUpRight className="mr-2 h-4 w-4" />
+                {social.name}
+                <span className="ml-2 font-mono text-xs text-muted-foreground">
+                  {social.handle}
+                </span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+
+          <CommandSeparator />
+
+          <CommandGroup heading="Actions">
             <CommandItem
-              key={social.name}
-              value={`${social.name} ${social.handle}`}
-              onSelect={() =>
-                run(() => window.open(social.href, "_blank", "noopener,noreferrer"))
+              textValue="Download résumé"
+              onAction={() =>
+                run(() =>
+                  window.open(profile.resumeUrl, "_blank", "noopener,noreferrer")
+                )
               }
             >
-              <ArrowUpRight className="mr-2 h-4 w-4" />
-              {social.name}
-              <span className="ml-2 font-mono text-xs text-muted-foreground">
-                {social.handle}
-              </span>
+              <Download className="mr-2 h-4 w-4" />
+              Download résumé
             </CommandItem>
-          ))}
-        </CommandGroup>
-
-        <CommandSeparator />
-
-        <CommandGroup heading="Actions">
-          <CommandItem
-            onSelect={() =>
-              run(() =>
-                window.open(profile.resumeUrl, "_blank", "noopener,noreferrer")
-              )
-            }
-          >
-            <Download className="mr-2 h-4 w-4" />
-            Download résumé
-          </CommandItem>
-          <CommandItem
-            onSelect={() =>
-              run(() => {
-                navigator.clipboard
-                  ?.writeText(profile.email)
-                  .then(() => toast.success("Email copied to clipboard"))
-                  .catch(() => toast.error("Couldn't copy — long-press instead"));
-              })
-            }
-          >
-            <Clipboard className="mr-2 h-4 w-4" />
-            Copy email
-            <CommandShortcut>{profile.email}</CommandShortcut>
-          </CommandItem>
-          <CommandItem onSelect={() => run(() => setTheme("light"))}>
-            <Sun className="mr-2 h-4 w-4" />
-            Light theme
-          </CommandItem>
-          <CommandItem onSelect={() => run(() => setTheme("dark"))}>
-            <Moon className="mr-2 h-4 w-4" />
-            Dark theme
-          </CommandItem>
-          <CommandItem onSelect={() => run(() => setTheme("system"))}>
-            <Laptop className="mr-2 h-4 w-4" />
-            System theme
-          </CommandItem>
-        </CommandGroup>
-      </CommandList>
+            <CommandItem
+              textValue="Copy email"
+              onAction={() =>
+                run(() => {
+                  navigator.clipboard
+                    ?.writeText(profile.email)
+                    .then(() => toast.success("Email copied to clipboard"))
+                    .catch(() => toast.error("Couldn't copy — long-press instead"));
+                })
+              }
+            >
+              <Clipboard className="mr-2 h-4 w-4" />
+              Copy email
+              <CommandShortcut>{profile.email}</CommandShortcut>
+            </CommandItem>
+            <CommandItem textValue="Light theme" onAction={() => run(() => setTheme("light"))}>
+              <Sun className="mr-2 h-4 w-4" />
+              Light theme
+            </CommandItem>
+            <CommandItem textValue="Dark theme" onAction={() => run(() => setTheme("dark"))}>
+              <Moon className="mr-2 h-4 w-4" />
+              Dark theme
+            </CommandItem>
+            <CommandItem textValue="System theme" onAction={() => run(() => setTheme("system"))}>
+              <Laptop className="mr-2 h-4 w-4" />
+              System theme
+            </CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </Command>
     </CommandDialog>
   );
 }
