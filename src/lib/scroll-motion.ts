@@ -116,9 +116,13 @@ export function useScrollProgress<T extends HTMLElement>({
 }: ScrollProgressOptions = {}) {
   const ref = React.useRef<T>(null);
 
-  // Kept in a ref so callers need not memoise the callback.
+  // Kept in a ref so callers need not memoise the callback. Assigned in a
+  // layout effect rather than during render: mutating a ref while rendering is
+  // unsafe once React may re-run or abandon a render.
   const handler = React.useRef(onProgress);
-  handler.current = onProgress;
+  useIsomorphicLayoutEffect(() => {
+    handler.current = onProgress;
+  });
 
   useIsomorphicLayoutEffect(() => {
     const el = ref.current;
