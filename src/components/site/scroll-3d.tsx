@@ -3,17 +3,8 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { prefersReducedMotion, useScrollProgress } from "@/lib/scroll-motion";
+import { canAimATilt, useScrollProgress } from "@/lib/scroll-motion";
 import { useClientValue } from "@/lib/use-client-value";
-
-/** A tilt nobody can aim is just a jitter: needs a fine pointer that hovers. */
-function canAimATilt() {
-  return (
-    !prefersReducedMotion() &&
-    typeof window.matchMedia === "function" &&
-    window.matchMedia("(hover: hover) and (pointer: fine)").matches
-  );
-}
 
 type Depth = {
   /** Degrees of X tilt at full depth. Positive leans the top away from you. */

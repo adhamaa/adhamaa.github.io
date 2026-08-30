@@ -99,6 +99,16 @@ export function prefersReducedMotion() {
   );
 }
 
+/** A tilt nobody can aim is just a jitter: it needs a fine pointer that hovers. */
+export function canAimATilt() {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    !prefersReducedMotion() &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches
+  );
+}
+
 const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 

@@ -4,12 +4,12 @@ import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { useClientValue } from "@/lib/use-client-value";
+import { useHasHydrated } from "@/lib/use-client-value";
 
 /** Compact light/dark switch. Renders a stable shell until mounted. */
 export function ThemeToggle({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
-  const mounted = useClientValue(() => true, false);
+  const mounted = useHasHydrated();
 
   // Stay theme-agnostic until mounted so the server and client markup agree.
   const isDark = mounted && resolvedTheme === "dark";
