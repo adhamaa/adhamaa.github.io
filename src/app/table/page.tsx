@@ -114,7 +114,7 @@ export default function LabPage() {
                 onChange={(event) => table.setGlobalFilter(event.target.value)}
                 placeholder="Filter deployments…"
                 aria-label="Filter deployments"
-                className="w-52 bg-transparent font-mono text-xs outline-none placeholder:text-muted-foreground/60"
+                className="w-52 bg-transparent font-mono text-xs outline-hidden placeholder:text-muted-foreground/60"
               />
             </div>
             <span className="font-mono text-[11px] text-muted-foreground">

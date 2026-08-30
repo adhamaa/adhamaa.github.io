@@ -22,11 +22,11 @@ const token = {
 
 function Line({ n, children }: { n: number; children?: React.ReactNode }) {
   return (
-    <div className="group flex gap-4 px-4 leading-6 hover:bg-foreground/[0.03]">
+    <div className="group flex gap-4 px-4 leading-6 hover:bg-foreground/3">
       <span className="w-4 shrink-0 select-none text-right text-muted-foreground/40">
         {n}
       </span>
-      <span className="min-w-0 whitespace-pre-wrap break-words">{children}</span>
+      <span className="min-w-0 whitespace-pre-wrap wrap-break-word">{children}</span>
     </div>
   );
 }
@@ -53,7 +53,7 @@ export function Hero() {
       </Scroll3D>
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[-18rem] -z-10 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-brand/10 blur-[120px]"
+        className="pointer-events-none absolute left-1/2 -top-72 -z-10 h-128 w-lg -translate-x-1/2 rounded-full bg-brand/10 blur-[120px]"
       />
 
       <div className="container grid items-center gap-16 pb-16 pt-16 sm:pt-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:pb-20">
@@ -179,7 +179,7 @@ export function Hero() {
             perspective={1400}
           >
             <Tilt3D strength={5} perspective={1100}>
-              <div className="overflow-hidden rounded-xl border border-border/80 bg-card/70 shadow-2xl shadow-black/5 backdrop-blur-sm dark:shadow-black/40">
+              <div className="overflow-hidden rounded-xl border border-border/80 bg-card/70 shadow-2xl shadow-black/5 backdrop-blur-xs dark:shadow-black/40">
                 <div className="flex items-center gap-2 border-b border-border/70 bg-muted/40 px-4 py-2.5">
                   <span className="flex gap-1.5">
                     <span className="h-2.5 w-2.5 rounded-full bg-destructive/60" />
@@ -285,11 +285,11 @@ export function Hero() {
       <div className="relative flex overflow-hidden border-y border-border/70 py-3">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-linear-to-r from-background to-transparent"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-linear-to-l from-background to-transparent"
         />
         <div className="flex min-w-full shrink-0 animate-marquee items-center gap-10 pr-10">
           {[...marqueeItems, ...marqueeItems].map((item, index) => (

@@ -91,7 +91,7 @@ export function PipelineSection() {
               One feature, start to finish, without a handoff.
             </h2>
 
-            <div className="pin-copy-deck mt-6 min-h-[10rem] sm:min-h-[8.5rem]">
+            <div className="pin-copy-deck mt-6 min-h-40 sm:min-h-34">
               {pipeline.map((layer, index) => (
                 <article
                   key={layer.id}
@@ -120,7 +120,7 @@ export function PipelineSection() {
           </div>
 
           <div className="pin-stage">
-            <ol className="pin-stack h-[16rem] sm:h-[20rem]">
+            <ol className="pin-stack h-64 sm:h-80">
               {pipeline.map((layer, index) => (
                 <li
                   key={layer.id}
@@ -128,7 +128,7 @@ export function PipelineSection() {
                     slabs.current[index] = node;
                   }}
                   data-active={index === 0 ? "true" : "false"}
-                  className="pin-slab rounded-xl border border-border/80 bg-card/80 p-6 shadow-2xl shadow-black/5 backdrop-blur-sm data-[active=true]:border-brand/50 dark:shadow-black/50 sm:p-7"
+                  className="pin-slab rounded-xl border border-border/80 bg-card/80 p-6 shadow-2xl shadow-black/5 backdrop-blur-xs data-[active=true]:border-brand/50 dark:shadow-black/50 sm:p-7"
                 >
                   <div className="flex items-baseline justify-between gap-3">
                     <h3 className="text-lg font-medium tracking-tight sm:text-xl">
