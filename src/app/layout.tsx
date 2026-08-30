@@ -71,7 +71,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    // `data-scroll-behavior="smooth"` restores the pre-16 default: Next no
+    // longer overrides scroll-behavior during navigation, so without it the
+    // page would animate a long smooth scroll to the top on every route change
+    // instead of jumping. In-page anchors keep their smooth scroll either way.
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className={cn(
           sans.variable,

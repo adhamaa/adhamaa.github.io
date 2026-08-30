@@ -5,7 +5,7 @@ Personal site and portfolio of **Adham Akmal Azmi** — a statically exported Ne
 **Live:** https://adhamaa.github.io
 
 [![Deploy](https://github.com/adhamaa/adhamaa.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/adhamaa/adhamaa.github.io/actions/workflows/deploy.yml)
-![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 
@@ -25,8 +25,8 @@ A one-page portfolio plus an about page and a component lab, built dark-first wi
 
 | Layer | Choice |
 | :--- | :--- |
-| Framework | Next.js 14, App Router, static export |
-| Language | TypeScript |
+| Framework | Next.js 16, App Router, static export |
+| Language | TypeScript, React 19 |
 | Styling | Tailwind CSS with CSS-variable design tokens, dark-first |
 | Primitives | Radix UI / shadcn-style components in `src/components/ui` |
 | Fonts | Inter + JetBrains Mono via `next/font` |

@@ -99,6 +99,16 @@ export function prefersReducedMotion() {
   );
 }
 
+/** A tilt nobody can aim is just a jitter: it needs a fine pointer that hovers. */
+export function canAimATilt() {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    !prefersReducedMotion() &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches
+  );
+}
+
 const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
@@ -116,9 +126,13 @@ export function useScrollProgress<T extends HTMLElement>({
 }: ScrollProgressOptions = {}) {
   const ref = React.useRef<T>(null);
 
-  // Kept in a ref so callers need not memoise the callback.
+  // Kept in a ref so callers need not memoise the callback. Assigned in a
+  // layout effect rather than during render: mutating a ref while rendering is
+  // unsafe once React may re-run or abandon a render.
   const handler = React.useRef(onProgress);
-  handler.current = onProgress;
+  useIsomorphicLayoutEffect(() => {
+    handler.current = onProgress;
+  });
 
   useIsomorphicLayoutEffect(() => {
     const el = ref.current;

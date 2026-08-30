@@ -3,7 +3,8 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { prefersReducedMotion, useScrollProgress } from "@/lib/scroll-motion";
+import { canAimATilt, useScrollProgress } from "@/lib/scroll-motion";
+import { useClientValue } from "@/lib/use-client-value";
 
 type Depth = {
   /** Degrees of X tilt at full depth. Positive leans the top away from you. */
@@ -125,15 +126,7 @@ export function Tilt3D({
   perspective = 1000,
 }: Tilt3DProps) {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = React.useState(false);
-
-  React.useEffect(() => {
-    setEnabled(
-      !prefersReducedMotion() &&
-        typeof window.matchMedia === "function" &&
-        window.matchMedia("(hover: hover) and (pointer: fine)").matches
-    );
-  }, []);
+  const enabled = useClientValue(canAimATilt, false);
 
   const handleMove = React.useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
