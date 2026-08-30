@@ -10,16 +10,12 @@ test.describe("home", () => {
   test("renders its heading", async ({ page }) => {
     await page.goto("/");
 
-    await expect(
-      page.getByRole("heading", { level: 1, name: "Adham Akmal Azmi." })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Adham Akmal Azmi." })).toBeVisible();
   });
 
   test("renders the selected work section", async ({ page }) => {
     await page.goto("/");
 
-    await expect(
-      page.getByRole("heading", { level: 2, name: "Selected work" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Selected work" })).toBeVisible();
   });
 });

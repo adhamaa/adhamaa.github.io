@@ -41,12 +41,13 @@ src/
   components/
     sections/       home page sections (hero, work, experience, stack, contact)
     site/           chrome: nav, footer, command palette, reveal, icons
-    ui/             shadcn primitives
+    ui/             the four reachable shadcn primitives
   data/             ← the content layer, edit this first
     profile.ts      identity, tagline, stats, capabilities, principles
     projects.ts     selected work: problem / what I built / highlights
     experience.ts   roles, education, languages
     stack.ts        grouped tech + hero ticker
+e2e/                smoke suite + the static server it runs against
 resume/             résumé source (HTML) → rendered to public/*.pdf
 public/             static assets, including the résumé PDF
 ```

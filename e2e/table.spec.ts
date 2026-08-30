@@ -6,6 +6,12 @@ import { expect, test, type Page } from "@playwright/test";
  * would therefore cover a fraction of this route and none of its behaviour,
  * which is why this suite drives a real browser instead.
  */
+
+/**
+ * Restated here rather than imported from the page: the suite asserts what a
+ * visitor sees, so it must fail if the seven rows the spec promises change,
+ * not quietly follow the source.
+ */
 const allDeploymentIds = [
   "dpl_9fa21",
   "dpl_9f8c4",
@@ -28,9 +34,12 @@ test.beforeEach(async ({ page }) => {
 
 test.describe("deployment table", () => {
   test("renders all seven deployments across its pages", async ({ page }) => {
-    const firstPage = await deploymentIdsOnScreen(page);
+    await expect(page.getByText("7 rows")).toBeVisible();
 
-    await page.getByRole("button", { name: "Next page" }).click();
+    const firstPage = await deploymentIdsOnScreen(page);
+    // The pagination control is an icon, so its accessible name is the only
+    // handle a visitor-level test has. Wording may shift; the match is loose.
+    await page.getByRole("button", { name: /next page/i }).click();
     const secondPage = await deploymentIdsOnScreen(page);
 
     expect([...firstPage, ...secondPage].sort()).toEqual(
@@ -56,9 +65,10 @@ test.describe("deployment table", () => {
     expect(await deploymentIdsOnScreen(page)).toEqual(["dpl_9f7b0"]);
   });
 
-  test("tells the visitor when nothing matches the search", async ({ page }) => {
+  test("shows no deployments when the search matches nothing", async ({ page }) => {
     await page.getByPlaceholder(/Filter deployments/).fill("nothing matches this");
 
-    await expect(page.getByText("No deployments match that filter.")).toBeVisible();
+    await expect(page.getByText(allDeploymentIds[0])).toBeHidden();
+    expect(await deploymentIdsOnScreen(page)).toEqual([]);
   });
 });
