@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: profile.siteUrl, lastModified, priority: 1 },
     { url: `${profile.siteUrl}/about`, lastModified, priority: 0.8 },
+    { url: `${profile.siteUrl}/cover-letter`, lastModified, priority: 0.7 },
     { url: `${profile.siteUrl}/table`, lastModified, priority: 0.5 },
   ];
 }

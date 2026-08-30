@@ -8,6 +8,7 @@ import {
   ArrowUpRight,
   Clipboard,
   Download,
+  FileText,
   Home,
   Laptop,
   Moon,
@@ -44,6 +45,7 @@ export function openCommandMenu() {
 const routes = [
   { label: "Home", href: "/", icon: Home },
   { label: "About", href: "/about", icon: User },
+  { label: "Cover letter", href: "/cover-letter", icon: FileText },
   { label: "Lab", href: "/table", icon: Terminal },
 ];
 
@@ -151,6 +153,21 @@ export function CommandMenu() {
             >
               <Download className="mr-2 h-4 w-4" />
               Download résumé
+            </CommandItem>
+            <CommandItem
+              textValue="Download cover letter"
+              onAction={() =>
+                run(() =>
+                  window.open(
+                    profile.coverLetterUrl,
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
+                )
+              }
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              Download cover letter
             </CommandItem>
             <CommandItem
               textValue="Copy email"

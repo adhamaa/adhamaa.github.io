@@ -63,6 +63,14 @@ export function Footer() {
               résumé
             </a>
             <a
+              href={profile.coverLetterUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground"
+            >
+              cover letter
+            </a>
+            <a
               href="https://github.com/adhamaa/adhamaa"
               target="_blank"
               rel="noopener noreferrer"

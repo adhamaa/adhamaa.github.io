@@ -51,6 +51,15 @@ export function ContactSection() {
               <Download className="h-3.5 w-3.5" />
               résumé.pdf
             </a>
+            <a
+              href={profile.coverLetterUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center gap-2 rounded-md border border-border/80 px-4 font-mono text-xs text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground"
+            >
+              <Download className="h-3.5 w-3.5" />
+              cover-letter.pdf
+            </a>
           </div>
 
           <div className="mt-10">

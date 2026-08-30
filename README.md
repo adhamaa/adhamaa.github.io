@@ -15,7 +15,7 @@ Personal site and portfolio of **Adham Akmal Azmi** — a statically exported Ne
 
 ## What it is
 
-A one-page portfolio plus an about page and a component lab, built dark-first with a terminal/editor aesthetic. Three things shape the implementation:
+A one-page portfolio plus an about page, a cover letter and a component lab, built dark-first with a terminal/editor aesthetic. Three things shape the implementation:
 
 - **No server.** `output: "export"` produces a fully static `out/`. Nothing runs at request time, so hosting is free and there is nothing to keep patched.
 - **Typed content layer.** Copy is data, not JSX. Everything personal lives in `src/data/` and the pages render whatever is there.
@@ -37,7 +37,7 @@ A one-page portfolio plus an about page and a component lab, built dark-first wi
 
 ```
 src/
-  app/              routes: / , /about , /table (lab), sitemap.ts, robots.ts
+  app/              routes: / , /about , /cover-letter , /table (lab), sitemap.ts, robots.ts
   components/
     sections/       home page sections (hero, work, experience, stack, contact)
     site/           chrome: nav, footer, command palette, reveal, icons
@@ -46,16 +46,17 @@ src/
     profile.ts      identity, tagline, stats, capabilities, principles
     projects.ts     selected work: problem / what I built / highlights
     experience.ts   roles, education, languages
+    cover-letter.ts the open cover letter rendered by /cover-letter
     stack.ts        grouped tech + hero ticker
     deployments.ts  sample rows for the component lab table
 e2e/                smoke suite + the static server it runs against
-resume/             résumé source (HTML) → rendered to public/*.pdf
-public/             static assets, including the résumé PDF
+resume/             résumé + cover letter sources (HTML) → rendered to public/*.pdf
+public/             static assets, including the résumé and cover letter PDFs
 ```
 
 ### Editing content
 
-Change `src/data/*.ts` — not the components. The pages read from those files, so copy changes never require touching JSX. `profile.ts` is the single source of truth for name, role, contact details and the résumé link, and it feeds page metadata, the sitemap and the JSON-LD `Person` schema as well as the visible page.
+Change `src/data/*.ts` — not the components. The pages read from those files, so copy changes never require touching JSX. `profile.ts` is the single source of truth for name, role, contact details and the résumé and cover-letter links, and it feeds page metadata, the sitemap and the JSON-LD `Person` schema as well as the visible page.
 
 ## Local development
 
@@ -93,9 +94,9 @@ pnpm test:e2e    # build, then drive a browser over out/
 - This is a *user* site (`<username>.github.io`), served at the domain root, so **no `basePath` is needed**. Setting one would break every asset path — see the commented-out line in `next.config.js`.
 - `public/.nojekyll` stops Pages from filtering `_next/`.
 
-## Résumé
+## Résumé & cover letter
 
-The PDF at `public/Adham_Akmal_Azmi_Resume.pdf` is generated from `resume/Adham_Akmal_Azmi_Resume.html`, so edits go in the HTML and the PDF is rebuilt:
+Two print documents live in `resume/` as HTML and render to PDFs in `public/`. Edits go in the HTML; the PDF is then rebuilt:
 
 ```bash
 msedge --headless=new --disable-gpu --no-pdf-header-footer \
@@ -103,7 +104,15 @@ msedge --headless=new --disable-gpu --no-pdf-header-footer \
   "file:///<absolute-path>/resume/Adham_Akmal_Azmi_Resume.html"
 ```
 
-Any Chromium binary works in place of `msedge`. The layout targets two A4 pages and the output stays text-extractable so applicant tracking systems can parse it.
+```bash
+msedge --headless=new --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf="public/Adham_Akmal_Azmi_Cover_Letter.pdf" \
+  "file:///<absolute-path>/resume/Adham_Akmal_Azmi_Cover_Letter.html"
+```
+
+Any Chromium binary works in place of `msedge`. The résumé targets two A4 pages and the cover letter one, and both stay text-extractable so applicant tracking systems can parse them.
+
+> **Note:** the cover letter exists twice — as `resume/Adham_Akmal_Azmi_Cover_Letter.html` for print, and as `src/data/cover-letter.ts` for the `/cover-letter` page. They are not generated from each other, so change the prose in both.
 
 ## License
 
