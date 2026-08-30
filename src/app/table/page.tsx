@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  flexRender,
-  type MRT_ColumnDef,
-  useMantineReactTable,
-} from "mantine-react-table";
+import type { SortDescriptor } from "react-aria-components";
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -17,25 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-type Deployment = {
-  id: string;
-  branch: string;
-  env: "production" | "preview";
-  status: "ready" | "building" | "error";
-  duration: string;
-  commit: string;
-};
-
-const deployments: Deployment[] = [
-  { id: "dpl_9fa21", branch: "main", env: "production", status: "ready", duration: "48s", commit: "feat: command palette" },
-  { id: "dpl_9f8c4", branch: "feat/stack-grid", env: "preview", status: "ready", duration: "41s", commit: "refactor: token colours" },
-  { id: "dpl_9f7b0", branch: "fix/marquee", env: "preview", status: "error", duration: "12s", commit: "fix: reduced-motion guard" },
-  { id: "dpl_9f6aa", branch: "main", env: "production", status: "ready", duration: "52s", commit: "chore: bump next" },
-  { id: "dpl_9f512", branch: "feat/about", env: "preview", status: "building", duration: "—", commit: "wip: about rail" },
-  { id: "dpl_9f4d8", branch: "feat/seo", env: "preview", status: "ready", duration: "39s", commit: "feat: metadata + og" },
-  { id: "dpl_9f3c1", branch: "main", env: "production", status: "ready", duration: "45s", commit: "feat: dark-first tokens" },
-];
+import {
+  deploymentColumns,
+  deployments,
+  type Deployment,
+  type DeploymentColumnId,
+} from "@/data/deployments";
 
 const statusStyles: Record<Deployment["status"], string> = {
   ready: "border-brand/40 text-brand",
@@ -43,43 +26,40 @@ const statusStyles: Record<Deployment["status"], string> = {
   error: "border-destructive/40 text-destructive",
 };
 
-const columns: MRT_ColumnDef<Deployment>[] = [
-  { accessorKey: "id", header: "Deployment" },
-  { accessorKey: "commit", header: "Commit" },
-  { accessorKey: "branch", header: "Branch" },
-  { accessorKey: "env", header: "Env" },
-  {
-    accessorKey: "status",
-    header: "Status",
-    Cell: ({ cell }) => {
-      const status = cell.getValue<Deployment["status"]>();
-      return (
-        <span
-          className={cn(
-            "rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em]",
-            statusStyles[status]
-          )}
-        >
-          {status}
-        </span>
-      );
-    },
-  },
-  { accessorKey: "duration", header: "Duration" },
-];
+const pagerButton =
+  "inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-40";
+
+const PAGE_SIZE = 5;
 
 export default function LabPage() {
-  const table = useMantineReactTable({
-    columns,
-    data: React.useMemo(() => deployments, []),
-    enableSorting: true,
-    initialState: {
-      pagination: { pageSize: 5, pageIndex: 0 },
-      showGlobalFilter: true,
-    },
-  });
+  const [filter, setFilter] = React.useState("");
+  const [page, setPage] = React.useState(0);
+  /** Null until the visitor sorts, which is also React Aria's "unsorted". */
+  const [sort, setSort] = React.useState<SortDescriptor | null>(null);
 
-  const { globalFilter, pagination } = table.getState();
+  // Seven static rows: filtering, sorting and paging are cheaper to do here
+  // than to hand to a table library.
+  const filtered = React.useMemo(() => {
+    const needle = filter.trim().toLowerCase();
+    if (!needle) return deployments;
+    return deployments.filter((row) =>
+      Object.values(row).some((value) => value.toLowerCase().includes(needle))
+    );
+  }, [filter]);
+
+  const rows = React.useMemo(() => {
+    if (!sort) return filtered;
+    const key = sort.column as DeploymentColumnId;
+    const ordered = [...filtered].sort((a, b) => a[key].localeCompare(b[key]));
+    return sort.direction === "descending" ? ordered.reverse() : ordered;
+  }, [filtered, sort]);
+
+  const pageCount = Math.max(Math.ceil(rows.length / PAGE_SIZE), 1);
+  const currentPage = Math.min(page, pageCount - 1);
+  const visible = rows.slice(
+    currentPage * PAGE_SIZE,
+    currentPage * PAGE_SIZE + PAGE_SIZE
+  );
 
   return (
     <div className="relative">
@@ -98,9 +78,9 @@ export default function LabPage() {
             <span className="text-brand">.</span>
           </h1>
           <p className="mt-5 text-pretty leading-relaxed text-muted-foreground">
-            A sandbox for the primitives this site is built from. Below: a
-            headless table — TanStack&apos;s engine driving my own markup, so
-            sorting, filtering and pagination stay logic, and the styling stays
+            A sandbox for the primitives this site is built from. Below: React
+            Aria&apos;s table primitive driving my own markup, so sorting and
+            keyboard navigation come from the library, and the styling stays
             mine.
           </p>
         </header>
@@ -110,101 +90,110 @@ export default function LabPage() {
             <div className="flex items-center gap-2">
               <Search className="h-3.5 w-3.5 text-muted-foreground" />
               <input
-                value={globalFilter ?? ""}
-                onChange={(event) => table.setGlobalFilter(event.target.value)}
+                value={filter}
+                onChange={(event) => {
+                  setFilter(event.target.value);
+                  setPage(0);
+                }}
                 placeholder="Filter deployments…"
                 aria-label="Filter deployments"
                 className="w-52 bg-transparent font-mono text-xs outline-hidden placeholder:text-muted-foreground/60"
               />
             </div>
             <span className="font-mono text-[11px] text-muted-foreground">
-              {table.getFilteredRowModel().rows.length} rows
+              {rows.length} rows
             </span>
           </div>
 
           <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id} className="hover:bg-transparent">
-                    {headerGroup.headers.map((header) => {
-                      const sorted = header.column.getIsSorted();
-                      return (
-                        <TableHead key={header.id} className="whitespace-nowrap">
-                          {header.isPlaceholder ? null : (
-                            <button
-                              type="button"
-                              onClick={header.column.getToggleSortingHandler()}
-                              className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors hover:text-foreground"
-                            >
-                              {flexRender(
-                                header.column.columnDef.Header ??
-                                  header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                              {sorted === "asc" ? (
-                                <ArrowUp className="h-3 w-3 text-brand" />
-                              ) : sorted === "desc" ? (
-                                <ArrowDown className="h-3 w-3 text-brand" />
-                              ) : null}
-                            </button>
-                          )}
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                ))}
+            <Table
+              aria-label="Deployments"
+              sortDescriptor={sort ?? undefined}
+              onSortChange={(descriptor) => {
+                setSort(descriptor);
+                setPage(0);
+              }}
+            >
+              <TableHeader className="border-b border-border/70">
+                {deploymentColumns.map((column) => {
+                  const active = sort?.column === column.id;
+                  return (
+                    <TableHead
+                      key={column.id}
+                      id={column.id}
+                      isRowHeader={column.id === "id"}
+                      allowsSorting
+                      className="h-12 cursor-default px-4 font-mono text-[11px] leading-5 uppercase tracking-[0.14em] text-muted-foreground outline-hidden transition-colors hover:text-foreground focus-visible:text-foreground"
+                    >
+                      <span className="inline-flex items-center gap-1.5">
+                        {column.label}
+                        {active ? (
+                          sort.direction === "ascending" ? (
+                            <ArrowUp className="h-3 w-3 text-brand" />
+                          ) : (
+                            <ArrowDown className="h-3 w-3 text-brand" />
+                          )
+                        ) : null}
+                      </span>
+                    </TableHead>
+                  );
+                })}
               </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
+              <TableBody
+                renderEmptyState={() => (
+                  <div className="py-10 text-center font-mono text-xs text-muted-foreground">
+                    No deployments match that filter.
+                  </div>
+                )}
+              >
+                {visible.map((row) => (
+                  <TableRow key={row.id} id={row.id} className="border-border/70">
+                    {deploymentColumns.map((column) => (
                       <TableCell
-                        key={cell.id}
-                        className="whitespace-nowrap font-mono text-xs text-muted-foreground"
+                        key={column.id}
+                        className="px-4 py-4 font-mono text-xs text-muted-foreground"
                       >
-                        {flexRender(
-                          cell.column.columnDef.Cell ??
-                            cell.column.columnDef.cell,
-                          cell.getContext()
+                        {column.id === "status" ? (
+                          <span
+                            className={cn(
+                              "rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em]",
+                              statusStyles[row.status]
+                            )}
+                          >
+                            {row.status}
+                          </span>
+                        ) : (
+                          row[column.id]
                         )}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))}
-                {table.getRowModel().rows.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="py-10 text-center font-mono text-xs text-muted-foreground"
-                    >
-                      No deployments match that filter.
-                    </TableCell>
-                  </TableRow>
-                ) : null}
               </TableBody>
             </Table>
           </div>
 
           <div className="flex items-center justify-between gap-4 border-t border-border/70 px-4 py-3">
             <span className="font-mono text-[11px] text-muted-foreground">
-              page {pagination.pageIndex + 1} / {Math.max(table.getPageCount(), 1)}
+              page {currentPage + 1} / {pageCount}
             </span>
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+                onClick={() => setPage((value) => Math.max(value - 1, 0))}
+                disabled={currentPage === 0}
+                className={pagerButton}
                 aria-label="Previous page"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
               <button
                 type="button"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+                onClick={() =>
+                  setPage((value) => Math.min(value + 1, pageCount - 1))
+                }
+                disabled={currentPage >= pageCount - 1}
+                className={pagerButton}
                 aria-label="Next page"
               >
                 <ChevronRight className="h-4 w-4" />

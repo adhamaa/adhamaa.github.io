@@ -30,7 +30,7 @@ A one-page portfolio plus an about page and a component lab, built dark-first wi
 | Styling | Tailwind CSS with CSS-variable design tokens, dark-first |
 | Primitives | React Aria Components via shadcn, in `src/components/ui` (see ADR 0001) |
 | Fonts | Inter + JetBrains Mono via `next/font` |
-| Table demo | Mantine React Table, driven headlessly against custom markup |
+| Table demo | React Aria table primitive, driven against custom markup |
 | Hosting | GitHub Pages via GitHub Actions |
 
 ## Layout
@@ -47,6 +47,7 @@ src/
     projects.ts     selected work: problem / what I built / highlights
     experience.ts   roles, education, languages
     stack.ts        grouped tech + hero ticker
+    deployments.ts  sample rows for the component lab table
 e2e/                smoke suite + the static server it runs against
 resume/             résumé source (HTML) → rendered to public/*.pdf
 public/             static assets, including the résumé PDF
