@@ -122,8 +122,11 @@ jobs:
         if: steps.prepare.outputs.prs_created == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          PR: ${{ fromJSON(steps.prepare.outputs.pr).number }}
+          # Parsed in the shell, not with fromJSON(): step env is evaluated even
+          # when the step is skipped, and fromJSON('') fails the whole job.
+          PR_JSON: ${{ steps.prepare.outputs.pr }}
         run: |
+          PR=$(jq -r '.number' <<<"$PR_JSON")
           # GitHub computes mergeability asynchronously after a PR is created.
           for attempt in 1 2 3 4 5 6; do
             gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --squash && exit 0
