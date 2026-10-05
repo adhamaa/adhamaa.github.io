@@ -50,9 +50,6 @@ export function ApproachSection() {
                 </li>
               ))}
             </ul>
-            <p className="mt-6 border-t border-border/70 pt-4 font-mono text-[11px] text-muted-foreground/60">
-              Updated {new Date().getFullYear()} · {profile.timezone}
-            </p>
           </div>
         </Reveal>
       </div>

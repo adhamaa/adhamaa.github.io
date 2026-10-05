@@ -51,13 +51,17 @@ export function PipelineSection() {
           `scale(${(1 - Math.min(away, 2) * 0.07).toFixed(3)})`,
         ].join(" ");
         // Steep falloff, plus depth of field: neighbours read as depth rather
-        // than as a second column of text competing with the one in focus.
+        // than as a second column of text competing with the one in focus. The
+        // blur steps in halves of a pixel so a slow scroll does not repaint the
+        // layer for changes nobody can see.
         slab.style.opacity = Math.max(
           0,
           1 - away * (d >= 0 ? 0.62 : 0.85)
         ).toFixed(3);
         slab.style.filter =
-          away < 0.08 ? "none" : `blur(${Math.min(away * 3, 6).toFixed(1)}px)`;
+          away < 0.08
+            ? "none"
+            : `blur(${(Math.round(Math.min(away * 3, 6) * 2) / 2).toFixed(1)}px)`;
         slab.style.zIndex = String(Math.round(100 + z / 10));
         slab.dataset.active = away < 0.5 ? "true" : "false";
       });
@@ -99,7 +103,7 @@ export function PipelineSection() {
                 >
                   <p className="font-mono text-xs text-brand">
                     {layer.id} — {layer.title.toLowerCase()},{" "}
-                    <span className="text-muted-foreground/70">
+                    <span className="text-muted-foreground">
                       {layer.kicker}
                     </span>
                   </p>

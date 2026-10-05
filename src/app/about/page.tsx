@@ -6,6 +6,7 @@ import { stack } from "@/data/stack";
 import { education, languages } from "@/data/experience";
 import { Reveal } from "@/components/site/reveal";
 import { iconMap } from "@/components/site/icons";
+import { NewTab } from "@/components/site/new-tab";
 
 const facts = [
   { key: "name", value: profile.name },
@@ -31,7 +32,7 @@ export default function About() {
       />
 
       <div className="container py-16 sm:py-24">
-        <Reveal className="max-w-3xl">
+        <Reveal eager className="max-w-3xl">
           <span className="label">
             <span className="text-brand">{"//"}</span> about
           </span>
@@ -122,7 +123,7 @@ export default function About() {
                         {item.org}
                       </p>
                     </div>
-                    <span className="shrink-0 font-mono text-[11px] text-muted-foreground/70">
+                    <span className="shrink-0 font-mono text-[11px] text-muted-foreground">
                       {item.year}
                     </span>
                   </li>
@@ -192,6 +193,7 @@ export default function About() {
                 >
                   <Download className="h-4 w-4" />
                   Résumé
+                  <NewTab />
                 </a>
               </div>
             </Reveal>
@@ -206,7 +208,7 @@ export default function About() {
                     key={fact.key}
                     className="flex items-baseline justify-between gap-4 border-b border-border/70 px-4 py-3 last:border-b-0"
                   >
-                    <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
+                    <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                       {fact.key}
                     </dt>
                     <dd className="text-right text-sm">{fact.value}</dd>
@@ -231,9 +233,10 @@ export default function About() {
                         href={social.href}
                         target={social.icon === "mail" ? undefined : "_blank"}
                         rel="noopener noreferrer"
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-brand"
+                        className="touch-target inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-brand"
                       >
                         <span className="sr-only">{social.name}</span>
+                        {social.icon === "mail" ? null : <NewTab />}
                         <Icon className="h-4 w-4" />
                       </a>
                     </li>

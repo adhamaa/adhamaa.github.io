@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
+import { NewTab } from "@/components/site/new-tab";
 import { Scroll3D, Tilt3D } from "@/components/site/scroll-3d";
 import { GitHubIcon } from "@/components/site/icons";
 import { projects, type Project } from "@/data/projects";
@@ -12,12 +13,12 @@ import { projects, type Project } from "@/data/projects";
 const statusStyles: Record<Project["status"], string> = {
   active: "border-brand/40 text-brand",
   shipped: "border-border text-muted-foreground",
-  archived: "border-border/60 text-muted-foreground/60",
+  archived: "border-border/60 text-muted-foreground",
 };
 
 function ProjectLinks({ project }: { project: Project }) {
   const linkClass =
-    "inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground";
+    "touch-target inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground";
 
   return (
     <div className="flex flex-row items-start gap-4 md:flex-col md:items-end md:gap-3">
@@ -45,6 +46,7 @@ function ProjectLinks({ project }: { project: Project }) {
           >
             visit
             <ArrowUpRight className="h-3.5 w-3.5" />
+            <NewTab />
           </a>
         )
       ) : null}
@@ -58,6 +60,7 @@ function ProjectLinks({ project }: { project: Project }) {
         >
           <GitHubIcon className="h-3.5 w-3.5" />
           source
+          <NewTab />
         </a>
       ) : null}
     </div>
@@ -84,7 +87,7 @@ export function WorkSection() {
             <div className="grid gap-6 py-10 transition-colors md:grid-cols-[5rem_1fr_9rem] md:gap-10 md:group-hover:bg-muted/20">
               <div className="flex items-center gap-3 font-mono text-xs md:flex-col md:items-start md:gap-1">
                 <span className="text-brand">{project.id}</span>
-                <span className="text-muted-foreground/60">{project.year}</span>
+                <span className="text-muted-foreground">{project.year}</span>
               </div>
 
               <div className="min-w-0 max-w-2xl">
@@ -115,8 +118,8 @@ export function WorkSection() {
                         <Image
                           src={project.image}
                           alt={project.imageAlt ?? project.name}
-                          width={1910}
-                          height={872}
+                          width={1344}
+                          height={614}
                           sizes="(min-width: 768px) 42rem, 100vw"
                           className="h-auto w-full"
                         />
@@ -144,7 +147,7 @@ export function WorkSection() {
                   {project.highlights.map((highlight) => (
                     <li
                       key={highlight}
-                      className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground/90"
+                      className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground"
                     >
                       <span className="mt-[9px] h-px w-3 shrink-0 bg-brand/60" />
                       <span className="text-pretty">{highlight}</span>
@@ -153,7 +156,7 @@ export function WorkSection() {
                 </ul>
 
                 <div className="mt-6 flex flex-wrap items-center gap-2">
-                  <span className="mr-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground/60">
+                  <span className="mr-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                     {project.role}
                   </span>
                   {project.stack.map((tech) => (
@@ -179,10 +182,11 @@ export function WorkSection() {
           href="https://github.com/adhamaa"
           target="_blank"
           rel="noopener noreferrer"
-          className="link-underline text-foreground"
+          className="link-underline touch-target text-foreground"
         >
           github.com/adhamaa
           <ArrowUpRight className="h-3 w-3" />
+          <NewTab />
         </a>
       </p>
     </Section>

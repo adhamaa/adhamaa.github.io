@@ -7,12 +7,30 @@ import { Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { navLinks, profile } from "@/data/profile";
-import { openCommandMenu } from "@/components/site/command-menu";
+import { openCommandMenu } from "@/components/site/command-menu-loader";
 import { ThemeToggle } from "@/components/site/theme-toggle";
 
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = React.useState(false);
+  const header = React.useRef<HTMLElement>(null);
+
+  // Publish the real height (one row from `sm`, two on phones, taller again for
+  // finger-sized targets) so the pinned section can clear it exactly.
+  React.useEffect(() => {
+    const node = header.current;
+    if (!node) return;
+    const root = document.documentElement;
+    const publish = () =>
+      root.style.setProperty("--header-h", `${node.getBoundingClientRect().height}px`);
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--header-h");
+    };
+  }, []);
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -23,6 +41,7 @@ export function Nav() {
 
   return (
     <header
+      ref={header}
       className={cn(
         "sticky top-0 z-50 w-full border-b transition-colors duration-300",
         scrolled
@@ -33,7 +52,7 @@ export function Nav() {
       <div className="container flex h-16 items-center justify-between gap-4">
         <Link
           href="/"
-          className="group flex items-center gap-2 font-mono text-sm tracking-tight"
+          className="touch-target group flex items-center gap-2 font-mono text-sm tracking-tight"
         >
           <span className="text-brand">~/</span>
           <span className="font-medium">{profile.handle}</span>
@@ -51,8 +70,9 @@ export function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "rounded-md px-3 py-1.5 font-mono text-[13px] transition-colors",
+                  "touch-target inline-flex items-center rounded-md px-3 py-1.5 font-mono text-[13px] transition-colors",
                   active
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
@@ -72,7 +92,7 @@ export function Nav() {
             type="button"
             onClick={openCommandMenu}
             aria-label="Open command menu"
-            className="inline-flex h-8 items-center gap-2 rounded-md border border-border/80 px-2.5 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground"
+            className="touch-target inline-flex h-8 items-center justify-center gap-2 rounded-md border border-border/80 px-2.5 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground"
           >
             <Search className="h-3.5 w-3.5" />
             <span className="hidden font-mono text-xs md:inline">Search</span>
@@ -87,7 +107,7 @@ export function Nav() {
       {/* Mobile nav row */}
       <nav
         aria-label="Primary mobile"
-        className="container flex items-center gap-1 border-t border-border/60 py-1.5 sm:hidden"
+        className="container flex items-center gap-1 border-t border-border/60 py-1.5 pointer-coarse:py-0 sm:hidden"
       >
         {navLinks.map((link) => {
           const active =
@@ -96,8 +116,9 @@ export function Nav() {
             <Link
               key={link.href}
               href={link.href}
+              aria-current={active ? "page" : undefined}
               className={cn(
-                "rounded px-2 py-1 font-mono text-xs transition-colors",
+                "touch-target inline-flex items-center rounded px-2 py-1 font-mono text-xs transition-colors",
                 active
                   ? "bg-muted text-foreground"
                   : "text-muted-foreground hover:text-foreground"

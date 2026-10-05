@@ -55,31 +55,12 @@
 }
 
 @theme {
-
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-rise-3d: rise-3d 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-blink: blink 1.1s steps(1) infinite;
   --animate-marquee: marquee 40s linear infinite;
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
   @keyframes fade-up {
     from {
       opacity: 0;
@@ -187,6 +168,14 @@
   }
 }
 
+@utility touch-target {
+  /* Visual size stays put for a mouse; a finger gets the 44px hit area. */
+  @media (pointer: coarse) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 @utility scene-3d {
   /* --- Scroll-driven 3D ---------------------------------------------------
      `--p` (0 → 1) is written onto `.scene-3d` by the scroll engine. `--k` is
@@ -240,8 +229,10 @@
   height: 100svh;
   align-items: center;
   overflow: hidden;
-  /* Clear the sticky nav so the panel centres in the space below it. */
-  padding-top: 4rem;
+  /* Clear the sticky nav so the panel centres in the space below it. The nav
+     reports its real height (two rows on phones); the rem values are what
+     renders before that runs. */
+  padding-top: var(--header-h, 4rem);
 }
 
 @utility pin-stage {
@@ -314,9 +305,17 @@
     --brand: 158 72% 30%;
     --brand-foreground: 0 0% 100%;
     --grid: 240 6% 88%;
-    --glow: 158 72% 40%;
 
     --radius: 0.4rem;
+
+    /* Sticky header height; <Nav> overwrites it with the measured value. */
+    --header-h: 6.4rem;
+  }
+
+  @media (width >= 40rem) {
+    :root {
+      --header-h: 4rem;
+    }
   }
 
   .dark {
@@ -351,7 +350,6 @@
     --brand: 156 74% 46%;
     --brand-foreground: 240 8% 4%;
     --grid: 240 6% 13%;
-    --glow: 156 74% 46%;
   }
 }
 
@@ -397,16 +395,12 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .layer-3d,
-  .tilt-3d {
-    transform: none !important;
-    opacity: 1 !important;
-  }
-  /* Unpin: the section becomes a plain column of layers, in order. */
+/*
+  Unpinned pipeline. Used when motion is off, and when the stacked layout (below
+  `lg`) cannot fit the pinned panel under the header: a landscape phone or a
+  short portrait one would clip the heading, so it reads as a plain column.
+*/
+@media (prefers-reduced-motion: reduce), (width < 64rem) and (height < 48rem) {
   .pin-section {
     height: auto !important;
   }
@@ -433,6 +427,17 @@
   }
   .pin-copy {
     position: static !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .layer-3d,
+  .tilt-3d {
+    transform: none !important;
     opacity: 1 !important;
   }
   *,

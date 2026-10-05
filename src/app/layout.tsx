@@ -7,9 +7,11 @@ import { profile } from "@/data/profile";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Nav } from "@/components/site/nav";
 import { Footer } from "@/components/site/footer";
-import { CommandMenu } from "@/components/site/command-menu";
+import { CommandMenuLoader } from "@/components/site/command-menu-loader";
 import { Toaster } from "@/components/ui/sonner";
 import { StructuredData } from "@/components/site/structured-data";
+import { ThemeColor } from "@/components/site/theme-color";
+import { themeColors } from "@/lib/theme-colors";
 
 const sans = Inter({
   subsets: ["latin"],
@@ -59,10 +61,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fbfbfa" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
-  ],
+  // The site defaults to dark whatever the OS prefers, so a media query here
+  // would paint a light browser bar over a dark page. <ThemeColor> keeps it
+  // in step once the visitor's theme is known.
+  themeColor: themeColors.dark,
 };
 
 export default function RootLayout({
@@ -100,7 +102,8 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
-          <CommandMenu />
+          <CommandMenuLoader />
+          <ThemeColor />
           <StructuredData />
           <Toaster />
         </ThemeProvider>

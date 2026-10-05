@@ -30,13 +30,6 @@ import {
 } from "@/components/ui/command";
 import { profile, sectionLinks, socials } from "@/data/profile";
 
-export const OPEN_COMMAND_MENU = "open-command-menu";
-
-/** Opens the ⌘K palette from anywhere (used by the nav button). */
-export function openCommandMenu() {
-  window.dispatchEvent(new CustomEvent(OPEN_COMMAND_MENU));
-}
-
 /*
  * React Aria derives an item's filter text from its children only when they are
  * a plain string. Every item here is an icon plus a label, so each list below
@@ -55,35 +48,30 @@ const themes = [
   { label: "System theme", value: "system", icon: Laptop },
 ];
 
-export function CommandMenu() {
-  const [open, setOpen] = React.useState(false);
+/**
+ * The palette itself. Open state and the shortcut live in `CommandMenuLoader`,
+ * which mounts this on demand so its dependencies stay out of the first load.
+ */
+export function CommandMenu({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const router = useRouter();
   const { setTheme } = useTheme();
 
-  React.useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        setOpen((value) => !value);
-      }
-    };
-    const onOpen = () => setOpen(true);
-
-    document.addEventListener("keydown", onKeyDown);
-    window.addEventListener(OPEN_COMMAND_MENU, onOpen);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener(OPEN_COMMAND_MENU, onOpen);
-    };
-  }, []);
-
-  const run = React.useCallback((action: () => void) => {
-    setOpen(false);
-    action();
-  }, []);
+  const run = React.useCallback(
+    (action: () => void) => {
+      onOpenChange(false);
+      action();
+    },
+    [onOpenChange]
+  );
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandDialog open={open} onOpenChange={onOpenChange}>
       <Command>
         <CommandInput placeholder="Type a command or search…" />
         {/*
