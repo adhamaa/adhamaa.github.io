@@ -7,6 +7,8 @@ import { profile, socials } from "@/data/profile";
 import { marqueeItems } from "@/data/stack";
 import { iconMap } from "@/components/site/icons";
 import { Reveal } from "@/components/site/reveal";
+import { NewTab } from "@/components/site/new-tab";
+import { TechTicker } from "@/components/site/tech-ticker";
 import { Scroll3D, Tilt3D } from "@/components/site/scroll-3d";
 
 /** Editor-style token colours that hold up in both themes. */
@@ -16,14 +18,17 @@ const token = {
   prop: "text-foreground/80",
   string: "text-emerald-700 dark:text-emerald-400",
   literal: "text-amber-700 dark:text-amber-400",
-  punct: "text-muted-foreground/70",
-  comment: "text-muted-foreground/60 italic",
+  punct: "text-muted-foreground",
+  comment: "text-muted-foreground italic",
 };
 
 function Line({ n, children }: { n: number; children?: React.ReactNode }) {
   return (
     <div className="group flex gap-4 px-4 leading-6 hover:bg-foreground/3">
-      <span className="w-4 shrink-0 select-none text-right text-muted-foreground/40">
+      <span
+        aria-hidden
+        className="w-4 shrink-0 select-none text-right text-muted-foreground/40"
+      >
         {n}
       </span>
       <span className="min-w-0 whitespace-pre-wrap wrap-break-word">{children}</span>
@@ -58,7 +63,7 @@ export function Hero() {
 
       <div className="container grid items-center gap-16 pb-16 pt-16 sm:pt-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:pb-20">
         <div className="max-w-2xl">
-          <Reveal className="mb-8 flex flex-wrap items-center gap-3">
+          <Reveal eager className="mb-8 flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-background/60 px-3 py-1 font-mono text-[11px] text-muted-foreground">
               <span className="relative flex h-1.5 w-1.5">
                 {profile.available ? (
@@ -73,35 +78,40 @@ export function Hero() {
               </span>
               {profile.availableLabel}
             </span>
-            <span className="font-mono text-[11px] text-muted-foreground/70">
+            <span className="font-mono text-[11px] text-muted-foreground">
               {profile.location} · {profile.timezone}
             </span>
           </Reveal>
 
-          <Reveal delay={60}>
+          <Reveal eager delay={60}>
             <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
               {profile.name}
               <span className="text-brand">.</span>
             </h1>
           </Reveal>
 
-          <Reveal delay={120}>
+          <Reveal eager delay={120}>
             <p className="mt-4 flex flex-wrap items-center gap-2 font-mono text-sm text-muted-foreground sm:text-base">
               <span className="text-brand">$</span>
               <span>{profile.role.toLowerCase()}</span>
-              <span className="text-muted-foreground/40">—</span>
+              <span aria-hidden className="text-muted-foreground/40">
+                —
+              </span>
               <span>5+ years shipping</span>
-              <span className="inline-block h-4 w-[7px] animate-blink bg-brand align-middle" />
+              <span
+                aria-hidden
+                className="inline-block h-4 w-[7px] animate-blink bg-brand align-middle"
+              />
             </p>
           </Reveal>
 
-          <Reveal delay={180}>
+          <Reveal eager delay={180}>
             <p className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
               {profile.tagline}
             </p>
           </Reveal>
 
-          <Reveal delay={240}>
+          <Reveal eager delay={240}>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <a
                 href={`mailto:${profile.email}`}
@@ -118,6 +128,7 @@ export function Hero() {
               >
                 <Download className="h-4 w-4" />
                 Résumé
+                <NewTab />
               </a>
               <Link
                 href="/#work"
@@ -129,7 +140,7 @@ export function Hero() {
             </div>
           </Reveal>
 
-          <Reveal delay={300} depth>
+          <Reveal eager delay={300} depth>
             <dl className="mt-12 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-lg border border-border/80 bg-border/60">
               {profile.stats.map((stat) => (
                 <div key={stat.label} className="bg-background px-4 py-4">
@@ -144,7 +155,7 @@ export function Hero() {
             </dl>
           </Reveal>
 
-          <Reveal delay={340}>
+          <Reveal eager delay={340}>
             <ul className="mt-8 flex items-center gap-5">
               {socials.map((social) => {
                 const Icon = iconMap[social.icon];
@@ -154,9 +165,10 @@ export function Hero() {
                       href={social.href}
                       target={social.icon === "mail" ? undefined : "_blank"}
                       rel="noopener noreferrer"
-                      className="text-muted-foreground transition-colors hover:text-brand"
+                      className="touch-target inline-flex items-center justify-center text-muted-foreground transition-colors hover:text-brand"
                     >
                       <span className="sr-only">{social.name}</span>
+                      {social.icon === "mail" ? null : <NewTab />}
                       <Icon className="h-[18px] w-[18px]" />
                     </a>
                   </li>
@@ -167,7 +179,7 @@ export function Hero() {
         </div>
 
         {/* whoami.ts */}
-        <Reveal delay={200} depth className="lg:w-full lg:justify-self-end">
+        <Reveal eager delay={200} depth className="lg:w-full lg:justify-self-end">
           <Scroll3D
             mode="exit"
             start={0.22}
@@ -281,28 +293,7 @@ export function Hero() {
         </Reveal>
       </div>
 
-      {/* Tech ticker */}
-      <div className="relative flex overflow-hidden border-y border-border/70 py-3">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-linear-to-r from-background to-transparent"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-linear-to-l from-background to-transparent"
-        />
-        <div className="flex min-w-full shrink-0 animate-marquee items-center gap-10 pr-10">
-          {[...marqueeItems, ...marqueeItems].map((item, index) => (
-            <span
-              key={`${item}-${index}`}
-              className="flex shrink-0 items-center gap-10 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground/60"
-            >
-              {item}
-              <span className="text-brand/50">/</span>
-            </span>
-          ))}
-        </div>
-      </div>
+      <TechTicker items={marqueeItems} />
     </section>
   );
 }

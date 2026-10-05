@@ -4,6 +4,7 @@ import { ArrowUpRight, Download } from "lucide-react";
 import { coverLetter } from "@/data/cover-letter";
 import { profile } from "@/data/profile";
 import { Reveal } from "@/components/site/reveal";
+import { NewTab } from "@/components/site/new-tab";
 
 /** The sender block, printed the way it sits at the top of the PDF. */
 const sender = [
@@ -23,7 +24,7 @@ export default function CoverLetter() {
       />
 
       <div className="container py-16 sm:py-24">
-        <Reveal className="max-w-3xl">
+        <Reveal eager className="max-w-3xl">
           <span className="label">
             <span className="text-brand">{"//"}</span> cover letter
           </span>
@@ -45,7 +46,7 @@ export default function CoverLetter() {
                     <li key={line}>{line}</li>
                   ))}
                 </ul>
-                <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
+                <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                   {coverLetter.dated}
                 </p>
               </header>
@@ -85,6 +86,7 @@ export default function CoverLetter() {
               >
                 <Download className="h-4 w-4" />
                 Résumé
+                <NewTab />
               </a>
               <a
                 href={profile.coverLetterUrl}
@@ -94,6 +96,7 @@ export default function CoverLetter() {
               >
                 <Download className="h-4 w-4" />
                 Cover letter
+                <NewTab />
               </a>
             </div>
           </Reveal>
@@ -113,7 +116,7 @@ export default function CoverLetter() {
                     key={fact.key}
                     className="flex items-baseline justify-between gap-4 border-b border-border/70 px-4 py-3 last:border-b-0"
                   >
-                    <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
+                    <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                       {fact.key}
                     </dt>
                     <dd className="text-right text-sm">{fact.value}</dd>

@@ -33,12 +33,12 @@ export function ExperienceSection() {
                 {role.title}
                 <span className="text-muted-foreground"> · {role.company}</span>
               </h3>
-              <span className="shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
+              <span className="shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                 {role.period}
               </span>
             </div>
 
-            <p className="mt-1 font-mono text-[11px] text-muted-foreground/60">
+            <p className="mt-1 font-mono text-[11px] text-muted-foreground">
               {role.location}
             </p>
 

@@ -13,7 +13,7 @@ export type Project = {
   stack: string[];
   /** Two or three things worth pointing at in an interview. */
   highlights: string[];
-  /** Screenshot in /public/screenshots, 1910×872. */
+  /** Screenshot in /public/screenshots, 1344×614 WebP. */
   image?: string;
   imageAlt?: string;
   repo?: string;
@@ -39,7 +39,7 @@ export const projects: Project[] = [
       "Multi-user with per-entry attribution, so every transaction traces back to whoever recorded it",
       "Serverless Postgres on Neon behind a Hono API on Cloudflare Workers — no servers to patch, cold starts in milliseconds",
     ],
-    image: "/screenshots/sharah-cmpro.png",
+    image: "/screenshots/sharah-cmpro.webp",
     imageAlt:
       "Sharah CMpro cash in/out ledger showing monthly totals, an entry form and categorised transactions",
     live: "https://admin.sharah.my/",
@@ -62,7 +62,7 @@ export const projects: Project[] = [
       "Bilingual English and Bahasa Melayu throughout, switchable in place",
       "Domain modelled first — patients, cases, findings and remedies as real types rather than loose JSON",
     ],
-    image: "/screenshots/homeopathy-radionic-app.png",
+    image: "/screenshots/homeopathy-radionic-app.webp",
     imageAlt:
       "Clinical workspace dashboard with patient search, a consultation draft waiting to be continued, and recent patients",
     live: "https://homeopathy-radionic-app.qahwah.my/",
@@ -86,7 +86,7 @@ export const projects: Project[] = [
       "The crest and certificate template are mine too, so generated output matches the academy's identity exactly",
       "Bilingual interface, and role-gated so only admins can issue",
     ],
-    image: "/screenshots/qhp-certificate-register.png",
+    image: "/screenshots/qhp-certificate-register.webp",
     imageAlt:
       "Certificate register with member selector, template picker, batch generation and an inline PDF preview of a generated certificate",
     live: "https://qhp-web.qahwah.my/",

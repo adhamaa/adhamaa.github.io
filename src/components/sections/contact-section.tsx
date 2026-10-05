@@ -2,6 +2,7 @@ import { ArrowUpRight, Check, Download } from "lucide-react";
 
 import { Reveal } from "@/components/site/reveal";
 import { CopyEmail } from "@/components/site/copy-email";
+import { NewTab } from "@/components/site/new-tab";
 import { iconMap } from "@/components/site/icons";
 import { profile, socials } from "@/data/profile";
 
@@ -50,6 +51,7 @@ export function ContactSection() {
             >
               <Download className="h-3.5 w-3.5" />
               résumé.pdf
+              <NewTab />
             </a>
             <a
               href={profile.coverLetterUrl}
@@ -59,6 +61,7 @@ export function ContactSection() {
             >
               <Download className="h-3.5 w-3.5" />
               cover-letter.pdf
+              <NewTab />
             </a>
           </div>
 
@@ -99,6 +102,7 @@ export function ContactSection() {
                       <span className="font-mono text-xs text-muted-foreground">
                         {social.handle}
                       </span>
+                      <NewTab />
                     </a>
                   </li>
                 );

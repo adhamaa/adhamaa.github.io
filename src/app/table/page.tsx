@@ -22,12 +22,12 @@ import {
 
 const statusStyles: Record<Deployment["status"], string> = {
   ready: "border-brand/40 text-brand",
-  building: "border-amber-500/40 text-amber-600 dark:text-amber-400",
-  error: "border-destructive/40 text-destructive",
+  building: "border-amber-600/40 text-amber-700 dark:border-amber-500/40 dark:text-amber-400",
+  error: "border-destructive/40 text-destructive dark:text-red-400",
 };
 
 const pagerButton =
-  "inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-40";
+  "touch-target inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/80 text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-40";
 
 const PAGE_SIZE = 5;
 
@@ -97,7 +97,7 @@ export default function LabPage() {
                 }}
                 placeholder="Filter deployments…"
                 aria-label="Filter deployments"
-                className="w-52 bg-transparent font-mono text-xs outline-hidden placeholder:text-muted-foreground/60"
+                className="w-52 rounded-sm bg-transparent font-mono text-xs placeholder:text-muted-foreground"
               />
             </div>
             <span className="font-mono text-[11px] text-muted-foreground">
@@ -123,7 +123,7 @@ export default function LabPage() {
                       id={column.id}
                       isRowHeader={column.id === "id"}
                       allowsSorting
-                      className="h-12 cursor-default px-4 font-mono text-[11px] leading-5 uppercase tracking-[0.14em] text-muted-foreground outline-hidden transition-colors hover:text-foreground focus-visible:text-foreground"
+                      className="h-12 cursor-default px-4 font-mono text-[11px] leading-5 uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:outline-offset-[-2px]"
                     >
                       <span className="inline-flex items-center gap-1.5">
                         {column.label}
@@ -202,7 +202,7 @@ export default function LabPage() {
           </div>
         </section>
 
-        <p className="mt-6 font-mono text-[11px] text-muted-foreground/70">
+        <p className="mt-6 font-mono text-[11px] text-muted-foreground">
           Sample data — the point is the interaction, not the numbers.
         </p>
       </div>
