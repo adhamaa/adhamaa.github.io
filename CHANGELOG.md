@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/adhamaa/adhamaa.github.io/compare/v1.6.0...v1.6.1) (2026-10-05)
+
+
+### Bug Fixes
+
+* close the accessibility, responsive and performance gaps from the audit ([#24](https://github.com/adhamaa/adhamaa.github.io/issues/24)) ([0fbe7a7](https://github.com/adhamaa/adhamaa.github.io/commit/0fbe7a77553088218d952cbe048d393762b38003))
+
 ## [1.6.0](https://github.com/adhamaa/adhamaa.github.io/compare/v1.5.0...v1.6.0) (2026-08-30)
 
 
