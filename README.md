@@ -4,7 +4,7 @@ Personal site and portfolio of **Adham Akmal Azmi** — a statically exported Ne
 
 **Live:** https://adhamaa.github.io
 
-[![Deploy](https://github.com/adhamaa/adhamaa.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/adhamaa/adhamaa.github.io/actions/workflows/deploy.yml)
+[![CI/CD](https://github.com/adhamaa/adhamaa.github.io/actions/workflows/main.yml/badge.svg)](https://github.com/adhamaa/adhamaa.github.io/actions/workflows/main.yml)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
@@ -84,11 +84,22 @@ pnpm test:e2e    # build, then drive a browser over out/
 
 `pnpm test:e2e` builds and runs it. With a build already in `out/`, `pnpm exec playwright test` skips the rebuild, and `pnpm test:e2e:ui` opens the interactive runner. The static server under `e2e/` is plain Node with no dependencies, for the same reason.
 
-`.github/workflows/ci.yml` runs the suite on every pull request.
+`.github/workflows/main.yml` runs it, with lint and typecheck, on every pull request.
 
-## Deployment
+## Deployment and releases
 
-`.github/workflows/deploy.yml` builds and publishes to GitHub Pages on push to `master`, and can be run manually from the Actions tab.
+One workflow, `.github/workflows/main.yml`, covers all of it:
+
+| Event | What runs |
+| --- | --- |
+| Pull request | **Verify**: lint, typecheck, build, smoke suite |
+| Push to `master` | **Verify**, then **Deploy** and **Release** in parallel |
+
+Verify builds the static export once. The same `out/` it tests is what Pages publishes, so nothing ships that was not tested. The workflow can also be run by hand from the Actions tab.
+
+**Releases are automatic.** Merge a pull request with a `fix:` or `feat:` title (use `feat!:` for a breaking change) and, once Verify passes, release-please opens a release PR, the workflow merges it, and the `vX.Y.Z` tag and GitHub release appear. Other types (`chore:`, `docs:`) do not cut a release. The release commit only bumps `package.json` and `CHANGELOG.md`, and is pushed with the workflow token, which starts no further runs, so a release costs no second build or deploy. Configuration lives in `release-please-config.json` and `.release-please-manifest.json`.
+
+To force a specific version, add a `Release-As: x.y.z` footer to a commit message.
 
 - Pages source is **GitHub Actions**, not a branch.
 - This is a *user* site (`<username>.github.io`), served at the domain root, so **no `basePath` is needed**. Setting one would break every asset path — see the commented-out line in `next.config.js`.
