@@ -77,7 +77,7 @@ The build checks what the layout depends on, and fails, naming the file and fiel
 1. Deploy [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) to Cloudflare Workers.
 2. Register a GitHub OAuth App with `<worker-url>/callback` as its callback URL.
 3. Give the Worker `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (encrypted) and `ALLOWED_DOMAINS=adhamaa.github.io`.
-4. Put the Worker's URL in `base_url` in `public/admin/config.yml`.
+4. Put the Worker's URL in `base_url` in `public/admin/config.yml` (it is `https://sveltia-cms-auth.adham-92.workers.dev`).
 
 No secret goes in this repository. Sign-in asks GitHub only for `public_repo`, so a session can't reach private repositories. On someone else's device, sign out when you're done.
 
