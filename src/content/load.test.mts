@@ -44,20 +44,22 @@ principles:
 `;
 
 const roles = `
-- title: Founder & Developer
-  company: Example Works
-  location: Malaysia
-  period: Sep 2026 — present
-  summary: Runs the business.
-  points: [Builds things.]
-  stack: [React]
-  current: true
+roles:
+  - title: Founder & Developer
+    company: Example Works
+    location: Malaysia
+    period: Sep 2026 — present
+    summary: Runs the business.
+    points: [Builds things.]
+    stack: [React]
+    current: true
 `;
 
 const stack = `
-- title: Frontend
-  note: what users touch
-  items: [React, TypeScript]
+groups:
+  - title: Frontend
+    note: what users touch
+    items: [React, TypeScript]
 `;
 
 function project(fields: Record<string, unknown> = {}, body = ""): string {
@@ -282,4 +284,11 @@ test("reports unreadable front matter once, not again as a missing Project", () 
 
   assert.equal(found.length, 1);
   assert.equal(found[0].field, "(front matter)");
+});
+
+test("rejects Roles written as a bare list, pointing at the key they belong under", () => {
+  assert.deepEqual(
+    errors({ "content/roles.yml": "- title: Founder\n  company: Example Works\n" }),
+    [{ file: "content/roles.yml", field: "roles", message: "must be a list under `roles:`" }]
+  );
 });

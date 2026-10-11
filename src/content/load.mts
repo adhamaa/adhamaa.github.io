@@ -155,16 +155,28 @@ export function loadContent(root: string): LoadResult {
   const profileFile = readYaml("profile.yml");
   const profile = check(profileSchema, profileFile.value, profileFile.file);
 
-  const rolesFile = readYaml("roles.yml");
-  const roles = check(z.array(roleSchema), rolesFile.value, rolesFile.file);
+  /**
+   * Reads a file holding one list under `key`. The editor can't edit a file
+   * whose top level is a bare list, so that older shape gets its own message.
+   */
+  function readList<T>(name: string, key: string, item: z.ZodType<T>): T[] | null {
+    const { file, value } = readYaml(name);
+    if (Array.isArray(value)) {
+      errors.push({ file, field: key, message: `must be a list under \`${key}:\`` });
+      return null;
+    }
+    const parsed = check(z.object({ [key]: z.array(item) }), value, file);
+    return parsed ? (parsed[key] as T[]) : null;
+  }
 
-  const stackFile = readYaml("stack.yml");
-  const stackGroups = check(z.array(stackGroupSchema), stackFile.value, stackFile.file);
+  const roles = readList("roles.yml", "roles", roleSchema);
+  const stackGroups = readList("stack.yml", "groups", stackGroupSchema);
 
   const projectsDir = join(contentDir, "projects");
   const loaded: (z.infer<typeof projectSchema> & { slug: string; body: string })[] = [];
 
-  for (const name of readdirSync(projectsDir).filter((n) => extname(n) === ".md").sort()) {
+  const projectFiles = existsSync(projectsDir) ? readdirSync(projectsDir) : [];
+  for (const name of projectFiles.filter((n) => extname(n) === ".md").sort()) {
     const path = join(projectsDir, name);
     const file = fileOf(path);
     const { data, body } = splitFrontMatter(readFileSync(path, "utf8"), file, errors);

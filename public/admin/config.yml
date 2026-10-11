@@ -161,7 +161,6 @@ collections:
             label: Roles
             label_singular: Role
             widget: list
-            root: true
             hint: Most relevant first. Drag to reorder.
             summary: "{{title}} · {{company}}"
             fields:
@@ -187,7 +186,6 @@ collections:
             label: Stack Groups
             label_singular: Stack Group
             widget: list
-            root: true
             hint: In display order. Drag to reorder.
             summary: "{{title}}"
             fields:
