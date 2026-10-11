@@ -11,7 +11,7 @@ Content (Profile, Projects with their Case Studies, Roles and Stack Groups) move
 
 ## Consequences
 
-- **Login needs an OAuth Worker.** GitHub Pages cannot complete GitHub's OAuth flow, so the off-the-shelf `sveltia-cms-auth` Worker runs on Cloudflare, outside this repo, with a GitHub OAuth App registered by hand.
+- **Login needs an OAuth Worker.** GitHub Pages cannot complete GitHub's OAuth flow, so the off-the-shelf `sveltia-cms-auth` Worker runs on Cloudflare, outside this repo, with a GitHub OAuth App registered by hand. That gives a "Sign in with GitHub" button that works on any device without carrying a credential around. We rejected pasting a personal access token on each device for exactly that reason, and Clerk because it can only hand over a GitHub token through a server of our own. An OAuth app can't be limited to one repository, so the CMS asks for `public_repo` (`auth_scope`): a session can't reach private repositories. The Worker's `ALLOWED_DOMAINS` is set to `adhamaa.github.io`, so no other site can use it.
 - **A broken edit blocks later deploys** until it is fixed, because it sits on `master` even though it never deployed.
 - **The build is the schema.** Content is validated at build time; countable rules (a required, unique Slug; two to four highlights; a non-empty stack) fail `verify`, while matters of style are only hints in the editor. Project screenshots that are not 1344×614 WebP fail `verify` too.
 - **A Project's identity is its Slug**, set once and never changed; the two-digit number on the page is its position in the list.

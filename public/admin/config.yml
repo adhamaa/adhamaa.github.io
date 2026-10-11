@@ -7,9 +7,12 @@ backend:
   name: github
   repo: adhamaa/adhamaa.github.io
   branch: master
-  # The sveltia-cms-auth Worker on the owner's Cloudflare account. Replace this
-  # with the Worker's URL once it is deployed — sign-in fails until then.
-  base_url: https://sveltia-cms-auth.REPLACE-ME.workers.dev
+  # The sveltia-cms-auth Worker on the owner's Cloudflare account, which
+  # completes GitHub's OAuth flow for "Sign in with GitHub". See ADR 0003.
+  base_url: https://sveltia-cms-auth.adham-92.workers.dev
+  # The repository is public, so sign-in asks only for public_repo: a session
+  # can never read or write the owner's private repositories.
+  auth_scope: public_repo
   # `content:` is not a releasable type, so editing never cuts a release.
   commit_messages:
     create: 'content: add {{collection}} "{{slug}}"'
