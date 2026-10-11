@@ -2,56 +2,67 @@ import { expect, test, type Page } from "@playwright/test";
 
 /**
  * Case Studies as a visitor finds them: from a Project's card, at an address of
- * their own, and nowhere at all while they are Drafts. The Site's own Project
- * carries a published Case Study; AA Digital Works carries a Draft one.
+ * their own, in the sitemap, and nowhere in the nav.
+ *
+ * Content changes through the CMS without a code review, so nothing here names
+ * a Project or assumes which ones are published. These are rules that hold for
+ * any Content. Which Projects and Case Studies are Drafts is checked by the
+ * content loader's own tests, against Content they build themselves.
  */
 const workSection = (page: Page) =>
   page.getByRole("region", { name: "Selected work" });
 
-const card = (page: Page, name: string) =>
+/** Project cards only: each card's highlights are list items too. */
+const cards = (page: Page) =>
   workSection(page)
     .getByRole("listitem")
-    .filter({ has: page.getByRole("heading", { name, exact: true }) });
+    .filter({ has: page.getByRole("heading", { level: 3 }) });
+
+/** Each card that links to a Case Study, as its Project's name and the link's address. */
+async function caseStudyLinks(page: Page) {
+  const links: { name: string; href: string }[] = [];
+  for (const card of await cards(page).all()) {
+    const link = card.getByRole("link", { name: "Read the case study" });
+    if ((await link.count()) === 0) continue;
+    links.push({
+      name: (await card.getByRole("heading", { level: 3 }).innerText()).trim(),
+      href: (await link.getAttribute("href")) ?? "",
+    });
+  }
+  return links;
+}
 
 test.describe("case study", () => {
-  test("is read on its own page, reached from its Project's card", async ({ page }) => {
+  test("every card's Case Study link opens a page about that Project", async ({ page }) => {
     await page.goto("/");
+    const links = await caseStudyLinks(page);
 
-    await card(page, "adhamaa.github.io")
-      .getByRole("link", { name: "Read the case study" })
-      .click();
-
-    await expect(page).toHaveURL(/\/work\/adhamaa-github-io$/);
-    await expect(
-      page.getByRole("heading", { level: 1, name: "adhamaa.github.io" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { level: 2, name: "Why a portfolio needs a pipeline" })
-    ).toBeVisible();
+    for (const { name, href } of links) {
+      expect(href).toMatch(/^\/work\/[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      await page.goto(href);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(name);
+    }
   });
 
-  test("shows no link while a Project's Case Study is a Draft", async ({ page }) => {
-    await page.goto("/");
-
-    await expect(card(page, "AA Digital Works")).toBeVisible();
-    await expect(
-      card(page, "AA Digital Works").getByRole("link", { name: "Read the case study" })
-    ).toHaveCount(0);
-  });
-
-  test("has no page while it is a Draft", async ({ request }) => {
-    const response = await request.get("/work/aa-digital-works");
+  test("has no page at an address that isn't a Case Study", async ({ request }) => {
+    const response = await request.get("/work/no-such-project");
 
     expect(response.status()).toBe(404);
   });
 });
 
 test.describe("case study discovery", () => {
-  test("lists published Case Studies in the sitemap, and no Drafts", async ({ request }) => {
-    const sitemap = await (await request.get("/sitemap.xml")).text();
+  test("lists exactly the linked Case Studies in the sitemap", async ({ page, request }) => {
+    await page.goto("/");
+    const linked = (await caseStudyLinks(page)).map(({ href }) => href).sort();
 
-    expect(sitemap).toContain("https://adhamaa.github.io/work/adhamaa-github-io");
-    expect(sitemap).not.toContain("/work/aa-digital-works");
+    const sitemap = await (await request.get("/sitemap.xml")).text();
+    const listed = Array.from(
+      sitemap.matchAll(/<loc>https?:\/\/[^/<]+(\/work\/[^<]+)<\/loc>/g),
+      (match) => match[1]
+    ).sort();
+
+    expect(listed).toEqual(linked);
   });
 
   test("keeps Case Studies out of the main nav", async ({ page }) => {
@@ -67,7 +78,10 @@ test.describe("work list", () => {
   test("numbers Projects by their position", async ({ page }) => {
     await page.goto("/");
 
-    await expect(card(page, "AA Digital Works")).toContainText("01");
-    await expect(card(page, "adhamaa.github.io")).toContainText("05");
+    const all = await cards(page).all();
+    expect(all.length).toBeGreaterThan(0);
+    for (let index = 0; index < all.length; index++) {
+      await expect(all[index]).toContainText(String(index + 1).padStart(2, "0"));
+    }
   });
 });
