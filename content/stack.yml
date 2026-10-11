@@ -1,0 +1,42 @@
+- title: Frontend
+  note: what users actually touch
+  items:
+    - TypeScript
+    - React
+    - Next.js
+    - Vite
+    - Tailwind CSS
+    - Radix UI
+    - Redux · Context
+- title: Backend
+  note: the services behind it
+  items:
+    - Node.js
+    - Hono
+    - Express
+    - GraphQL
+    - REST
+    - Python
+    - Flask
+    - Django
+- title: Data
+  note: schemas and storage
+  items:
+    - PostgreSQL
+    - Neon (serverless PG)
+    - MongoDB
+    - SQL
+    - Zod
+    - Schema design
+- title: Platform
+  note: how it ships and stays up
+  items:
+    - Cloudflare Workers
+    - Docker
+    - Linux
+    - GitHub Actions
+    - PM2
+    - Git
+    - AI pair programming
+    - Postman
+    - Figma

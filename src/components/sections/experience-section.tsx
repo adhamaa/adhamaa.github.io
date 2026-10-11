@@ -14,7 +14,7 @@ export function ExperienceSection() {
         {experience.map((role, index) => (
           <Reveal
             as="li"
-            key={role.id}
+            key={`${role.company}-${role.period}`}
             delay={index * 80}
             className="relative pb-14 last:pb-0"
           >

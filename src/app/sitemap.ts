@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
+import { caseStudyLinks } from "@/data/case-study-links";
 import { profile } from "@/data/profile";
+import { caseStudyPath } from "@/lib/utils";
 
 // Next 16 stopped caching route-handler GETs by default, and the metadata
 // files compile to route handlers. Under `output: "export"` the build refuses
@@ -14,5 +16,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${profile.siteUrl}/about`, lastModified, priority: 0.8 },
     { url: `${profile.siteUrl}/cover-letter`, lastModified, priority: 0.7 },
     { url: `${profile.siteUrl}/table`, lastModified, priority: 0.5 },
+    ...caseStudyLinks.map(({ slug }) => ({
+      url: `${profile.siteUrl}${caseStudyPath(slug)}`,
+      lastModified,
+      priority: 0.7,
+    })),
   ];
 }

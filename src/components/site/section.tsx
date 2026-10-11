@@ -22,12 +22,13 @@ export function Section({
   return (
     <section
       id={id}
+      aria-labelledby={`${id}-title`}
       className={cn("scroll-mt-24 border-t border-border/70 py-20 sm:py-28", className)}
     >
       <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex items-baseline gap-4">
           <span className="font-mono text-xs text-brand">{index}</span>
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h2 id={`${id}-title`} className="text-2xl font-semibold tracking-tight sm:text-3xl">
             {title}
           </h2>
         </div>

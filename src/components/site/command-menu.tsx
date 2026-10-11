@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import {
   ArrowUpRight,
+  BookOpen,
   Clipboard,
   Download,
   FileText,
@@ -29,6 +30,8 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import { profile, sectionLinks, socials } from "@/data/profile";
+import { caseStudyLinks } from "@/data/case-study-links";
+import { caseStudyPath } from "@/lib/utils";
 
 /*
  * React Aria derives an item's filter text from its children only when they are
@@ -109,6 +112,25 @@ export function CommandMenu({
           </CommandGroup>
 
           <CommandSeparator />
+
+          {caseStudyLinks.length > 0 ? (
+            <>
+              <CommandGroup heading="Case studies">
+                {caseStudyLinks.map(({ slug, name }) => (
+                  <CommandItem
+                    key={slug}
+                    textValue={`${name} case study`}
+                    onAction={() => run(() => router.push(caseStudyPath(slug)))}
+                  >
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    {`${name} case study`}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+
+              <CommandSeparator />
+            </>
+          ) : null}
 
           <CommandGroup heading="Connect">
             {socials.map((social) => (

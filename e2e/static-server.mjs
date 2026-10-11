@@ -25,6 +25,11 @@ const contentTypes = {
   ".svg": "image/svg+xml",
   ".ico": "image/x-icon",
   ".png": "image/png",
+  ".webp": "image/webp",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".json": "application/json; charset=utf-8",
+  ".yml": "text/yaml; charset=utf-8",
   ".woff2": "font/woff2",
   ".pdf": "application/pdf",
 };

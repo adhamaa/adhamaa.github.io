@@ -1,71 +1,10 @@
-export type StackGroup = {
-  /** Two-digit index rendered next to the group title. */
-  id: string;
-  title: string;
-  note: string;
-  items: string[];
-};
+import type { StackGroup } from "@/content/load.mts";
+import stackJson from "./generated/stack.json";
 
-export const stack: StackGroup[] = [
-  {
-    id: "01",
-    title: "Frontend",
-    note: "what users actually touch",
-    items: [
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Vite",
-      "Tailwind CSS",
-      "Radix UI",
-      "Redux · Context",
-    ],
-  },
-  {
-    id: "02",
-    title: "Backend",
-    note: "the services behind it",
-    items: [
-      "Node.js",
-      "Hono",
-      "Express",
-      "GraphQL",
-      "REST",
-      "Python",
-      "Flask",
-      "Django",
-    ],
-  },
-  {
-    id: "03",
-    title: "Data",
-    note: "schemas and storage",
-    items: [
-      "PostgreSQL",
-      "Neon (serverless PG)",
-      "MongoDB",
-      "SQL",
-      "Zod",
-      "Schema design",
-    ],
-  },
-  {
-    id: "04",
-    title: "Platform",
-    note: "how it ships and stays up",
-    items: [
-      "Cloudflare Workers",
-      "Docker",
-      "Linux",
-      "GitHub Actions",
-      "PM2",
-      "Git",
-      "AI pair programming",
-      "Postman",
-      "Figma",
-    ],
-  },
-];
+export type { StackGroup };
+
+/** Stack Groups, in display order. Compiled from `content/stack.yml`. */
+export const stack: StackGroup[] = stackJson;
 
 /** Rendered in the hero ticker. */
 export const marqueeItems = [

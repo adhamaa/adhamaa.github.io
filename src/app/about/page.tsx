@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Check, Download } from "lucide-react";
 
+import { listNumber } from "@/lib/utils";
 import { profile, socials } from "@/data/profile";
 import { stack } from "@/data/stack";
 import { education, languages } from "@/data/experience";
@@ -90,12 +91,12 @@ export default function About() {
                 The toolkit
               </h2>
               <div className="grid gap-px overflow-hidden rounded-lg border border-border/80 bg-border/60 sm:grid-cols-2">
-                {stack.map((group) => (
-                  <div key={group.id} className="bg-background p-5">
+                {stack.map((group, index) => (
+                  <div key={group.title} className="bg-background p-5">
                     <div className="mb-3 flex items-baseline justify-between">
                       <h3 className="text-sm font-medium">{group.title}</h3>
                       <span className="font-mono text-[11px] text-brand">
-                        {group.id}
+                        {listNumber(index)}
                       </span>
                     </div>
                     <p className="font-mono text-xs leading-relaxed text-muted-foreground">

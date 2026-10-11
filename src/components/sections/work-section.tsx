@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { caseStudyPath, cn, listNumber } from "@/lib/utils";
 import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
 import { NewTab } from "@/components/site/new-tab";
@@ -79,14 +79,14 @@ export function WorkSection() {
         {projects.map((project, index) => (
           <Reveal
             as="li"
-            key={project.id}
+            key={project.slug}
             delay={index * 80}
             depth
             className="group border-b border-border/70"
           >
             <div className="grid gap-6 py-10 transition-colors md:grid-cols-[5rem_1fr_9rem] md:gap-10 md:group-hover:bg-muted/20">
               <div className="flex items-center gap-3 font-mono text-xs md:flex-col md:items-start md:gap-1">
-                <span className="text-brand">{project.id}</span>
+                <span className="text-brand">{listNumber(index)}</span>
                 <span className="text-muted-foreground">{project.year}</span>
               </div>
 
@@ -154,6 +154,16 @@ export function WorkSection() {
                     </li>
                   ))}
                 </ul>
+
+                {project.hasCaseStudy ? (
+                  <Link
+                    href={caseStudyPath(project.slug)}
+                    className="link-underline touch-target mt-5 font-mono text-xs"
+                  >
+                    Read the case study
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </Link>
+                ) : null}
 
                 <div className="mt-6 flex flex-wrap items-center gap-2">
                   <span className="mr-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
