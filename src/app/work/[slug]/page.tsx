@@ -77,9 +77,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
         </Link>
 
         <CaseStudyView
-          initial={{ project: { ...fields, _sys: { filename: project.slug } } }}
-          html={caseStudy.html}
-          relativePath={`${project.slug}.md`}
+          initial={{ project: { ...fields, body: caseStudy.body, _sys: { filename: project.slug } } }}
+          relativePath={`${project.slug}.mdx`}
         />
 
         <script

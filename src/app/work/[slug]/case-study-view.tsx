@@ -5,20 +5,19 @@ import { useEditState, useTina } from "tinacms/dist/react";
 import { TinaMarkdown, type TinaMarkdownContent } from "tinacms/dist/rich-text";
 
 import { NewTab } from "@/components/site/new-tab";
+import { blockComponents } from "@/components/case-study/blocks";
 import { CASE_STUDY_QUERY, editable, type CaseStudyData } from "@/lib/tina";
 
 /**
- * A Case Study's header and write-up. Visitors get the build's HTML; inside
- * /editor, Tina swaps in live data, every field becomes click-to-edit, and the
- * write-up renders from Tina's rich-text tree as the owner types.
+ * A Case Study's header and write-up, rendered from the same rich-text tree
+ * for visitors (from the build) and in the editor (live, as the owner types),
+ * with every field click-to-edit there.
  */
 export function CaseStudyView({
   initial,
-  html,
   relativePath,
 }: {
   initial: CaseStudyData;
-  html: string;
   relativePath: string;
 }) {
   const { data } = useTina({
@@ -28,7 +27,6 @@ export function CaseStudyView({
   });
   const project = data.project;
   const { edit } = useEditState();
-  const live = typeof project.body === "object" && project.body !== null;
 
   return (
     <>
@@ -95,20 +93,15 @@ export function CaseStudyView({
         </div>
       </header>
 
-      {live ? (
-        <div
-          className="case-study mt-16 max-w-2xl border-t border-border/70 pt-12"
-          data-tina-field={editable(edit, project, "body")}
-        >
-          <TinaMarkdown content={project.body as TinaMarkdownContent} />
-        </div>
-      ) : (
-        // Owner-written Markdown, rendered to HTML at build time.
-        <div
-          className="case-study mt-16 max-w-2xl border-t border-border/70 pt-12"
-          dangerouslySetInnerHTML={{ __html: html }}
+      <div
+        className="case-study mt-16 max-w-2xl border-t border-border/70 pt-12"
+        data-tina-field={editable(edit, project, "body")}
+      >
+        <TinaMarkdown
+          content={project.body as TinaMarkdownContent}
+          components={blockComponents}
         />
-      )}
+      </div>
     </>
   );
 }
