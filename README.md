@@ -54,7 +54,6 @@ content/            ← the Content: edit this, or use /admin
   projects/<slug>.mdx  one Project per file; the MDX body is its Case Study, with Blocks
 scripts/            compile-content.mts (before dev, build, typecheck) and build-editor.mts (the editor, in build)
 tina/config.ts      the TinaCMS editor: collections, Blocks, branding (built into public/admin by CI)
-public/sveltia/     the fallback Sveltia editor, until it is retired
 e2e/                smoke suite + the static server it runs against
 resume/             résumé + cover letter sources (HTML) → rendered to public/*.pdf
 public/             static assets, including the résumé and cover letter PDFs
@@ -89,8 +88,6 @@ The build checks what the layout depends on, and fails, naming the file and fiel
 
 Without them, a push to `master` fails at the build step rather than deploying an editor nobody can sign in to.
 
-**Fallback.** The previous editor, Sveltia, stays at `/sveltia` until TinaCMS has proven itself, then it is removed along with its login Worker.
-
 ## Local development
 
 CI installs with **pnpm** from `pnpm-lock.yaml`, so use it locally too:
@@ -118,7 +115,7 @@ pnpm test:e2e    # build, then drive a browser over out/
 
 `pnpm test:e2e` builds and runs it. With a build already in `out/`, `pnpm exec playwright test` skips the rebuild, and `pnpm test:e2e:ui` opens the interactive runner. The static server under `e2e/` is plain Node with no dependencies, for the same reason.
 
-The one exception is `e2e/admin.spec.ts`. The editors are third-party apps that need a sign-in, so the suite only checks that their pages are served, by reading them. Editing itself is checked by hand. `e2e/editing.spec.ts` checks that visitors' pages carry none of the editor's click-to-edit markers.
+The one exception is `e2e/admin.spec.ts`. The editor is a third-party app that needs a sign-in, so the suite only checks that its page is served, by reading it. Editing itself is checked by hand. `e2e/editing.spec.ts` checks that visitors' pages carry none of the editor's click-to-edit markers.
 
 `src/content/load.test.mts` covers the content loader: each test builds a small Site on disk and checks the Content or errors that come back. `pnpm test:content` runs it.
 
