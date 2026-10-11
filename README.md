@@ -72,13 +72,14 @@ The build checks what the layout depends on, and fails, naming the file and fiel
 
 `draft: true` keeps a Project off the Site entirely; `caseStudyDraft: true` keeps only its Case Study off. Neither has anything to do with Status.
 
-**Signing in.** There is no login backend: `/admin` signs in with a GitHub fine-grained personal access token, pasted once per device (see ADR 0003).
+**One-time setup for sign-in.** GitHub Pages can't complete GitHub's OAuth flow, so `/admin` signs in through a small Worker on your own Cloudflare account:
 
-1. Create a token at GitHub → Settings → Developer settings → Fine-grained tokens, for **this repository only**, with **Contents: Read and write**. Give it an expiry you'll remember.
-2. Open `/admin`, choose **Sign In with Token**, and paste it. The browser keeps it until you sign out.
-3. When it expires, or a device is lost, revoke it on the same GitHub page and make a new one.
+1. Deploy [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) to Cloudflare Workers.
+2. Register a GitHub OAuth App with `<worker-url>/callback` as its callback URL.
+3. Give the Worker `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (encrypted) and `ALLOWED_DOMAINS=adhamaa.github.io`.
+4. Put the Worker's URL in `base_url` in `public/admin/config.yml`.
 
-The token never goes in this repository.
+No secret goes in this repository. Sign-in asks GitHub only for `public_repo`, so a session can't reach private repositories. On someone else's device, sign out when you're done.
 
 ## Local development
 
