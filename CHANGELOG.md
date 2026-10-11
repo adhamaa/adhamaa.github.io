@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0](https://github.com/adhamaa/adhamaa.github.io/compare/v1.6.1...v1.7.0) (2026-10-11)
+
+
+### Features
+
+* add AA Digital Works as the current Role and the first Project ([17ef9ed](https://github.com/adhamaa/adhamaa.github.io/commit/17ef9eddc4b06f028174061c9b0fe51cc58d91ce)), closes [#28](https://github.com/adhamaa/adhamaa.github.io/issues/28)
+* edit Content through its own CMS, with Case Studies and Drafts ([415f155](https://github.com/adhamaa/adhamaa.github.io/commit/415f155f097a6d8ab6691e34194c4da4cc8947e1)), closes [#29](https://github.com/adhamaa/adhamaa.github.io/issues/29)
+* give the Site its own CMS, with Case Studies, Drafts and AA Digital Works ([89df2be](https://github.com/adhamaa/adhamaa.github.io/commit/89df2be8c00b6785051fdb8e2ffdd653575e7a38))
+
+
+### Bug Fixes
+
+* address the review of the CMS and AA Digital Works changes ([9c4420f](https://github.com/adhamaa/adhamaa.github.io/commit/9c4420fb88de6aefa7420fe8bcaa37f58971384f))
+
 ## [1.6.1](https://github.com/adhamaa/adhamaa.github.io/compare/v1.6.0...v1.6.1) (2026-10-05)
 
 
