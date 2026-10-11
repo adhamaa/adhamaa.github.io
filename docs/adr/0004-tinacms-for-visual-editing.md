@@ -27,4 +27,4 @@ Content had to stay in GitHub. TinaCMS is the Git-based editor that does visual,
   - Visitors get the build's Content back unchanged, and markers render only in edit mode.
   - On the home page this is about 14 KB gzipped of Tina code.
 - **Tina's interface is only partly themeable.** Tina 3 colours its interface with fixed Tailwind classes, not variables, so the brand green is applied by recolouring those classes, colours only. If an upgrade renames one, that piece falls back to Tina's orange or blue; layout can't break. A full dark skin was deliberately left out.
-- **Retiring Sveltia.** It stays at `/sveltia` until TinaCMS has worked in production for a few days. Then Sveltia, its `sveltia-cms-auth` Worker, the Worker's repository and the "adhamaa.github.io CMS" OAuth App are removed.
+- **Sveltia is retired.** It stayed at `/sveltia` while TinaCMS proved itself in production, and was removed on 2026-10-12 once the owner had signed in to TinaCMS in production. Its `sveltia-cms-auth` Worker, the Worker's repository and the "adhamaa.github.io CMS" OAuth App go with it.
