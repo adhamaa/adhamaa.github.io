@@ -448,3 +448,85 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/*
+  Case Study text. The write-up is Markdown rendered to plain HTML at build time,
+  so it is styled by element here rather than by classes in the markup.
+*/
+@layer components {
+  .case-study {
+    color: hsl(var(--muted-foreground));
+    line-height: 1.8;
+  }
+  .case-study > * + * {
+    margin-top: 1.25rem;
+  }
+  .case-study h2 {
+    margin-top: 3rem;
+    color: hsl(var(--foreground));
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .case-study h3 {
+    margin-top: 2rem;
+    color: hsl(var(--foreground));
+    font-weight: 500;
+  }
+  .case-study > :first-child {
+    margin-top: 0;
+  }
+  .case-study p,
+  .case-study li {
+    text-wrap: pretty;
+  }
+  .case-study ul,
+  .case-study ol {
+    padding-left: 1.25rem;
+  }
+  .case-study ul {
+    list-style: disc;
+  }
+  .case-study ol {
+    list-style: decimal;
+  }
+  .case-study li + li {
+    margin-top: 0.5rem;
+  }
+  .case-study li::marker {
+    color: hsl(var(--brand) / 0.7);
+  }
+  .case-study a {
+    color: hsl(var(--foreground));
+    text-decoration: underline;
+    text-decoration-color: hsl(var(--brand));
+    text-underline-offset: 3px;
+  }
+  .case-study strong {
+    color: hsl(var(--foreground));
+    font-weight: 500;
+  }
+  .case-study code {
+    font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+    font-size: 0.875em;
+    color: hsl(var(--foreground));
+  }
+  .case-study pre {
+    overflow-x: auto;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    padding: 1rem;
+    line-height: 1.6;
+  }
+  .case-study blockquote {
+    border-left: 2px solid hsl(var(--brand) / 0.6);
+    padding-left: 1rem;
+  }
+  .case-study img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+  }
+}

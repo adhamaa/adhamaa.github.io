@@ -19,6 +19,10 @@ const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const text = z.string().trim().min(1, "can't be empty");
 const texts = z.array(text);
 
+/** An optional field left empty in the editor arrives as null or "": absent. */
+const optional = <T extends z.ZodType>(schema: T) =>
+  z.preprocess((value) => (value === null || value === "" ? undefined : value), schema.optional());
+
 const profileSchema = z.object({
   name: text,
   shortName: text,
@@ -50,7 +54,7 @@ const roleSchema = z.object({
   summary: text,
   points: texts,
   stack: texts,
-  current: z.boolean().optional(),
+  current: optional(z.boolean()),
 });
 
 const stackGroupSchema = z.object({
@@ -84,10 +88,10 @@ const projectSchema = z.object({
       });
     }
   }),
-  image: text.optional(),
-  imageAlt: text.optional(),
-  repo: z.url().optional(),
-  live: text.optional(),
+  image: optional(text),
+  imageAlt: optional(text),
+  repo: optional(z.url()),
+  live: optional(text),
 });
 
 export type Profile = z.infer<typeof profileSchema>;

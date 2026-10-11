@@ -155,6 +155,16 @@ export function WorkSection() {
                   ))}
                 </ul>
 
+                {project.hasCaseStudy ? (
+                  <Link
+                    href={`/work/${project.slug}`}
+                    className="link-underline touch-target mt-5 font-mono text-xs"
+                  >
+                    Read the case study
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </Link>
+                ) : null}
+
                 <div className="mt-6 flex flex-wrap items-center gap-2">
                   <span className="mr-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                     {project.role}

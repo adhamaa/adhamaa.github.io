@@ -63,6 +63,16 @@ test.describe("command palette", () => {
     await expect(paletteInput(page)).toBeHidden();
   });
 
+  test("opens a Case Study", async ({ page }) => {
+    await page.keyboard.press("ControlOrMeta+k");
+    await paletteInput(page).fill("case study");
+
+    await expect(page.getByText("adhamaa.github.io case study")).toBeVisible();
+    await page.keyboard.press("Enter");
+
+    await expect(page).toHaveURL(/\/work\/adhamaa-github-io$/);
+  });
+
   test("dismisses with Escape", async ({ page }) => {
     await page.keyboard.press("ControlOrMeta+k");
     await expect(paletteInput(page)).toBeVisible();

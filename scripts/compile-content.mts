@@ -38,6 +38,11 @@ write("roles.json", roles);
 write("stack.json", stackGroups);
 write("projects.json", projects);
 write("case-studies.json", caseStudies);
+// Just enough for the command palette, which ships to the client.
+write(
+  "case-study-links.json",
+  projects.filter((p) => p.hasCaseStudy).map(({ slug, name }) => ({ slug, name }))
+);
 
 console.log(
   `Content OK: ${projects.length} Projects, ${caseStudies.length} Case Studies, ${roles.length} Roles, ${stackGroups.length} Stack Groups.`

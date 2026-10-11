@@ -267,3 +267,12 @@ test("rejects a Case Study image over 500 KB, and accepts one under it", () => {
     ]
   );
 });
+
+test("treats an optional field the editor left empty as absent", () => {
+  const { projects } = content({
+    "content/projects/plain.md": project({ image: null, imageAlt: "", repo: "", live: null }),
+  });
+
+  assert.equal(projects[0].image, undefined);
+  assert.equal(projects[0].repo, undefined);
+});

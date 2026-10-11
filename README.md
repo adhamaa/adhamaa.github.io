@@ -18,7 +18,7 @@ Personal site and portfolio of **Adham Akmal Azmi** — a statically exported Ne
 A one-page portfolio plus an about page, a cover letter and a component lab, built dark-first with a terminal/editor aesthetic. Three things shape the implementation:
 
 - **No server.** `output: "export"` produces a fully static `out/`. Nothing runs at request time, so hosting is free and there is nothing to keep patched.
-- **Typed content layer.** Copy is data, not JSX. Everything personal lives in `src/data/` and the pages render whatever is there.
+- **Its own CMS.** Content is plain YAML and Markdown in `content/`, edited at `/admin` from any device and validated at build time. Copy is data, not JSX.
 - **Client JS only where earned.** Pages that need no interactivity ship none; the palette, theme toggle and scroll reveals are the only client components.
 
 ## Stack
@@ -37,18 +37,23 @@ A one-page portfolio plus an about page, a cover letter and a component lab, bui
 
 ```
 src/
-  app/              routes: / , /about , /cover-letter , /table (lab), sitemap.ts, robots.ts
+  app/              routes: / , /about , /cover-letter , /table (lab), /work/<slug> (Case Studies), sitemap.ts, robots.ts
   components/
     sections/       home page sections (hero, work, experience, stack, contact)
     site/           chrome: nav, footer, command palette, reveal, icons
     ui/             shadcn primitives on React Aria
-  data/             ← the content layer, edit this first
-    profile.ts      identity, tagline, stats, capabilities, principles
-    projects.ts     selected work: problem / what I built / highlights
-    experience.ts   roles, education, languages
-    cover-letter.ts the open cover letter rendered by /cover-letter
-    stack.ts        grouped tech + hero ticker
+  content/load.mts  validates content/ and returns typed Content, or errors by file and field
+  data/             typed adapters the pages import; generated/ is compiled from content/
+    cover-letter.ts the open cover letter rendered by /cover-letter (not in the CMS)
+    pipeline.ts     the home page pipeline copy (not in the CMS)
     deployments.ts  sample rows for the component lab table
+content/            ← the Content: edit this, or use /admin
+  profile.yml       identity, tagline, stats, bio, capabilities, principles
+  roles.yml         experience, most relevant first
+  stack.yml         Stack Groups, in display order
+  projects/<slug>.md  one Project per file; the Markdown body is its Case Study
+scripts/            compile-content.mts, run before dev, build and typecheck
+public/admin/       the Sveltia CMS page and its config.yml
 e2e/                smoke suite + the static server it runs against
 resume/             résumé + cover letter sources (HTML) → rendered to public/*.pdf
 public/             static assets, including the résumé and cover letter PDFs
@@ -56,7 +61,24 @@ public/             static assets, including the résumé and cover letter PDFs
 
 ### Editing content
 
-Change `src/data/*.ts` — not the components. The pages read from those files, so copy changes never require touching JSX. `profile.ts` is the single source of truth for name, role, contact details and the résumé and cover-letter links, and it feeds page metadata, the sitemap and the JSON-LD `Person` schema as well as the visible page.
+Edit at **`/admin`** (Sveltia CMS, signed in with GitHub), or change the files in `content/` directly. Every save is a commit to `master` with a `content:` message. It goes through Verify like any other push and never cuts a release. See [ADR 0003](docs/adr/0003-git-based-cms-on-static-export.md), and [CONTEXT.md](CONTEXT.md) for the vocabulary.
+
+The build checks what the layout depends on, and fails, naming the file and field, if a rule is broken:
+
+- a Project's Slug is its file name, set once when it is created, in lowercase letters, digits and hyphens;
+- two to four highlights, at least one tool in the stack, and a Status of `shipped`, `active` or `archived`;
+- screenshots must be 1344×614 WebP;
+- Case Study images, in `public/case-studies/<slug>/`, must be 500 KB or smaller.
+
+`draft: true` keeps a Project off the Site entirely; `caseStudyDraft: true` keeps only its Case Study off. Neither has anything to do with Status.
+
+**One-time setup for sign-in.** GitHub Pages can't complete GitHub's OAuth flow, so `/admin` signs in through a small Worker on your own Cloudflare account:
+
+1. Deploy [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) to Cloudflare Workers.
+2. Register a GitHub OAuth App with `<worker-url>/callback` as its callback URL, and give the Worker its client ID and secret.
+3. Put the Worker's URL in `base_url` in `public/admin/config.yml`.
+
+No secret goes in this repository.
 
 ## Local development
 
@@ -72,7 +94,8 @@ Then open http://localhost:3000.
 ```bash
 pnpm build       # static export to out/
 pnpm lint        # eslint, same rules CI enforces
-pnpm typecheck   # tsc --noEmit
+pnpm typecheck   # compile content/, then tsc --noEmit
+pnpm test:content  # the content loader's rules, on Node's test runner
 pnpm test:e2e    # build, then drive a browser over out/
 ```
 
@@ -84,7 +107,9 @@ pnpm test:e2e    # build, then drive a browser over out/
 
 `pnpm test:e2e` builds and runs it. With a build already in `out/`, `pnpm exec playwright test` skips the rebuild, and `pnpm test:e2e:ui` opens the interactive runner. The static server under `e2e/` is plain Node with no dependencies, for the same reason.
 
-`.github/workflows/main.yml` runs it, with lint and typecheck, on every pull request.
+`src/content/load.test.mts` covers the content loader: each test builds a small Site on disk and checks the Content or errors that come back. `pnpm test:content` runs it.
+
+`.github/workflows/main.yml` runs both, with lint and typecheck, on every pull request.
 
 ## Deployment and releases
 
