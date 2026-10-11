@@ -7,9 +7,8 @@ backend:
   name: github
   repo: adhamaa/adhamaa.github.io
   branch: master
-  # The sveltia-cms-auth Worker on the owner's Cloudflare account. Replace this
-  # with the Worker's URL once it is deployed — sign-in fails until then.
-  base_url: https://sveltia-cms-auth.REPLACE-ME.workers.dev
+  # No base_url: the owner signs in with a fine-grained personal access token
+  # ("Sign In with Token"), so there is no OAuth backend to run. See ADR 0003.
   # `content:` is not a releasable type, so editing never cuts a release.
   commit_messages:
     create: 'content: add {{collection}} "{{slug}}"'
