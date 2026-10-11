@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ArrowUpRight, Check, Download } from "lucide-react";
 
-import { listNumber } from "@/lib/utils";
 import { profile, socials } from "@/data/profile";
-import { stack } from "@/data/stack";
+import { LiveText } from "@/components/site/live-content";
+import { StackToolkit } from "@/components/site/stack-toolkit";
 import { education, languages } from "@/data/experience";
 import { Reveal } from "@/components/site/reveal";
 import { iconMap } from "@/components/site/icons";
@@ -42,19 +42,19 @@ export default function About() {
             <span className="text-brand">.</span>
           </h1>
           <p className="mt-6 text-pretty text-lg leading-relaxed text-muted-foreground">
-            {profile.tagline}
+            <LiveText name="tagline" />
           </p>
         </Reveal>
 
         <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_18rem] lg:gap-16">
           <div className="order-2 space-y-16 lg:order-1">
             <Reveal className="space-y-6">
-              {profile.bio.map((paragraph) => (
+              {profile.bio.map((paragraph, index) => (
                 <p
                   key={paragraph.slice(0, 24)}
                   className="text-pretty text-base leading-[1.8] text-muted-foreground"
                 >
-                  {paragraph}
+                  <LiveText name="bio" index={index} />
                 </p>
               ))}
             </Reveal>
@@ -73,13 +73,15 @@ export default function About() {
                 afterwards.
               </p>
               <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                {profile.capabilities.map((item) => (
+                {profile.capabilities.map((item, index) => (
                   <li
                     key={item}
                     className="flex items-start gap-2.5 text-sm leading-relaxed text-muted-foreground"
                   >
                     <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-                    <span className="text-pretty">{item}</span>
+                    <span className="text-pretty">
+                      <LiveText name="capabilities" index={index} />
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -90,21 +92,7 @@ export default function About() {
                 <span className="font-mono text-xs text-brand">02</span>
                 The toolkit
               </h2>
-              <div className="grid gap-px overflow-hidden rounded-lg border border-border/80 bg-border/60 sm:grid-cols-2">
-                {stack.map((group, index) => (
-                  <div key={group.title} className="bg-background p-5">
-                    <div className="mb-3 flex items-baseline justify-between">
-                      <h3 className="text-sm font-medium">{group.title}</h3>
-                      <span className="font-mono text-[11px] text-brand">
-                        {listNumber(index)}
-                      </span>
-                    </div>
-                    <p className="font-mono text-xs leading-relaxed text-muted-foreground">
-                      {group.items.join(" · ")}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <StackToolkit />
             </Reveal>
 
             <Reveal className="space-y-6">
@@ -138,13 +126,15 @@ export default function About() {
                 Currently
               </h2>
               <ul className="space-y-3">
-                {profile.now.map((item) => (
+                {profile.now.map((item, index) => (
                   <li
                     key={item}
                     className="flex gap-3 leading-relaxed text-muted-foreground"
                   >
                     <span className="mt-[11px] h-px w-4 shrink-0 bg-brand/50" />
-                    <span className="text-pretty">{item}</span>
+                    <span className="text-pretty">
+                      <LiveText name="now" index={index} />
+                    </span>
                   </li>
                 ))}
               </ul>

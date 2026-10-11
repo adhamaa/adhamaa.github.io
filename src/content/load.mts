@@ -11,7 +11,9 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, extname, join, relative } from "node:path";
 import { z } from "zod";
 import { parse as parseYaml } from "yaml";
-import { marked } from "marked";
+import { parseMDX } from "@tinacms/mdx";
+
+import { caseStudyField } from "./blocks.mts";
 
 /** Must match the slug pattern in the editor's configuration. */
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -108,7 +110,11 @@ export type Project = Omit<
 };
 
 /** A Project's long-form write-up, rendered to HTML. */
-export type CaseStudy = { slug: string; html: string };
+/** A Case Study's write-up as the tree TinaCMS edits and the Site renders. */
+export type RichText = { type: "root"; children: unknown[] };
+
+/** A Project's long-form write-up, ready to render. */
+export type CaseStudy = { slug: string; body: RichText };
 
 export type Content = {
   profile: Profile;
@@ -155,22 +161,34 @@ export function loadContent(root: string): LoadResult {
   const profileFile = readYaml("profile.yml");
   const profile = check(profileSchema, profileFile.value, profileFile.file);
 
-  const rolesFile = readYaml("roles.yml");
-  const roles = check(z.array(roleSchema), rolesFile.value, rolesFile.file);
+  /**
+   * Reads a file holding one list under `key`. The editor can't edit a file
+   * whose top level is a bare list, so that older shape gets its own message.
+   */
+  function readList<T>(name: string, key: string, item: z.ZodType<T>): T[] | null {
+    const { file, value } = readYaml(name);
+    if (Array.isArray(value)) {
+      errors.push({ file, field: key, message: `must be a list under \`${key}:\`` });
+      return null;
+    }
+    const parsed = check(z.object({ [key]: z.array(item) }), value, file);
+    return parsed ? (parsed[key] as T[]) : null;
+  }
 
-  const stackFile = readYaml("stack.yml");
-  const stackGroups = check(z.array(stackGroupSchema), stackFile.value, stackFile.file);
+  const roles = readList("roles.yml", "roles", roleSchema);
+  const stackGroups = readList("stack.yml", "groups", stackGroupSchema);
 
   const projectsDir = join(contentDir, "projects");
-  const loaded: (z.infer<typeof projectSchema> & { slug: string; body: string })[] = [];
+  const loaded: (z.infer<typeof projectSchema> & { slug: string; body: RichText | null })[] = [];
 
-  for (const name of readdirSync(projectsDir).filter((n) => extname(n) === ".md").sort()) {
+  const projectFiles = existsSync(projectsDir) ? readdirSync(projectsDir) : [];
+  for (const name of projectFiles.filter((n) => extname(n) === ".mdx").sort()) {
     const path = join(projectsDir, name);
     const file = fileOf(path);
     const { data, body } = splitFrontMatter(readFileSync(path, "utf8"), file, errors);
     // Unreadable front matter is already reported; checking it again adds noise.
     const fields = data === undefined ? null : check(projectSchema, data, file);
-    const slug = basename(name, ".md");
+    const slug = basename(name, ".mdx");
     if (!SLUG.test(slug)) {
       errors.push({
         file,
@@ -182,7 +200,8 @@ export function loadContent(root: string): LoadResult {
       const problem = checkScreenshot(join(root, "public", fields.image), fields.image);
       if (problem) errors.push({ file, field: "image", message: problem });
     }
-    if (fields) loaded.push({ ...fields, slug, body: body.trim() });
+    const tree = readCaseStudy(body, file, errors);
+    if (fields) loaded.push({ ...fields, slug, body: tree });
   }
 
   // Case Study images live in a folder per Project. Anything the editor
@@ -212,7 +231,7 @@ export function loadContent(root: string): LoadResult {
 
   const caseStudies: CaseStudy[] = published
     .filter((p) => p.body && !p.caseStudyDraft)
-    .map((p) => ({ slug: p.slug, html: marked.parse(p.body, { async: false }) }));
+    .map((p) => ({ slug: p.slug, body: p.body as RichText }));
 
   const projects: Project[] = published.map(
     ({ order: _o, draft: _d, caseStudyDraft: _c, body: _b, ...fields }) => ({
@@ -267,6 +286,43 @@ function webpSize(bytes: Buffer): { width: number; height: number } | null {
     default:
       return null;
   }
+}
+
+/** How many images a Gallery holds: enough to show a flow, few enough to read. */
+const GALLERY = { min: 2, max: 6 };
+
+type Node = { type?: string; name?: string; props?: Record<string, unknown>; message?: string; children?: Node[] };
+
+/**
+ * Parses a Case Study's MDX into the tree TinaCMS edits, and checks its Blocks.
+ * An empty body means no Case Study.
+ */
+function readCaseStudy(body: string, file: string, errors: ContentError[]): RichText | null {
+  if (!body.trim()) return null;
+  const tree = parseMDX(body, caseStudyField as never, (src: string) => src) as unknown as RichText;
+
+  const problems: string[] = [];
+  const visit = (node: Node) => {
+    if (node.type === "invalid_markdown") {
+      problems.push(`can't be read: ${String(node.message ?? "invalid MDX").split("\n")[0]}`);
+    } else if (node.type === "mdxJsxFlowElement" && node.name === "Figure") {
+      if (!String(node.props?.alt ?? "").trim()) problems.push("a Figure needs alt text");
+      if (!String(node.props?.src ?? "").trim()) problems.push("a Figure needs an image");
+    } else if (node.type === "mdxJsxFlowElement" && node.name === "Gallery") {
+      const images = Array.isArray(node.props?.images) ? (node.props?.images as Node["props"][]) : [];
+      if (images.length < GALLERY.min || images.length > GALLERY.max) {
+        problems.push(`a Gallery needs ${GALLERY.min} to ${GALLERY.max} images (has ${images.length})`);
+      }
+      if (images.some((image) => !String(image?.alt ?? "").trim())) {
+        problems.push("every Gallery image needs alt text");
+      }
+    }
+    node.children?.forEach(visit);
+  };
+  (tree.children as Node[]).forEach(visit);
+
+  for (const message of problems) errors.push({ file, field: "body", message });
+  return tree;
 }
 
 /** Splits a Markdown file into its YAML front matter and its body. */

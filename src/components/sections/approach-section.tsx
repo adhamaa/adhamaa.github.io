@@ -1,6 +1,7 @@
 import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
 import { profile } from "@/data/profile";
+import { LiveText } from "@/components/site/live-content";
 
 export function ApproachSection() {
   return (
@@ -24,10 +25,10 @@ export function ApproachSection() {
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-3 text-base font-medium tracking-tight">
-                {principle.title}
+                <LiveText name="principles" index={index} sub="title" />
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
-                {principle.body}
+                <LiveText name="principles" index={index} sub="body" />
               </p>
             </Reveal>
           ))}
@@ -40,13 +41,15 @@ export function ApproachSection() {
               <span className="label">Currently</span>
             </div>
             <ul className="space-y-4">
-              {profile.now.map((item) => (
+              {profile.now.map((item, index) => (
                 <li
                   key={item}
                   className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
                 >
                   <span className="mt-[7px] h-px w-4 shrink-0 bg-brand/50" />
-                  <span className="text-pretty">{item}</span>
+                  <span className="text-pretty">
+                    <LiveText name="now" index={index} />
+                  </span>
                 </li>
               ))}
             </ul>

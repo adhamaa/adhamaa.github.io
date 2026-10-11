@@ -5,6 +5,7 @@ import { CopyEmail } from "@/components/site/copy-email";
 import { NewTab } from "@/components/site/new-tab";
 import { iconMap } from "@/components/site/icons";
 import { profile, socials } from "@/data/profile";
+import { LiveText } from "@/components/site/live-content";
 
 export function ContactSection() {
   return (
@@ -68,13 +69,15 @@ export function ContactSection() {
           <div className="mt-10">
             <span className="label">What I can take off your plate</span>
             <ul className="mt-4 grid max-w-2xl gap-x-8 gap-y-2.5 sm:grid-cols-2">
-              {profile.capabilities.map((item) => (
+              {profile.capabilities.map((item, index) => (
                 <li
                   key={item}
                   className="flex items-start gap-2.5 text-sm leading-relaxed text-muted-foreground"
                 >
                   <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-                  <span className="text-pretty">{item}</span>
+                  <span className="text-pretty">
+                    <LiveText name="capabilities" index={index} />
+                  </span>
                 </li>
               ))}
             </ul>
@@ -110,7 +113,7 @@ export function ContactSection() {
             <li className="bg-background px-5 py-4">
               <span className="label">Based in</span>
               <p className="mt-1.5 text-sm">
-                {profile.location} · {profile.timezone}
+                <LiveText name="location" /> · <LiveText name="timezone" />
               </p>
             </li>
           </ul>

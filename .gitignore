@@ -39,3 +39,7 @@ next-env.d.ts
 
 # compiled from content/ by scripts/compile-content.mts
 /src/data/generated/
+
+# TinaCMS: generated types and the built editor (CI builds it)
+/tina/__generated__/
+/public/admin/

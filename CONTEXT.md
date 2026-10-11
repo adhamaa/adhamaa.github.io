@@ -36,6 +36,10 @@ _Avoid_: State, published
 An optional long-form write-up of a single Project, read on its own page. A Project has at most one.
 _Avoid_: Post, article, deep dive
 
+**Block**:
+A ready-made element placed inside a Case Study: a Figure (one image with a caption), a Callout (a highlighted note) or a Gallery (several images).
+_Avoid_: Component, widget, shortcode, embed
+
 **Role**:
 One job Adham held at a company, with its period, summary and points.
 _Avoid_: Job, position, experience entry

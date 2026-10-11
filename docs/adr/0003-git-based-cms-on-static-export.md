@@ -1,5 +1,7 @@
 # A Git-based CMS on the static export
 
+The choice of editor (Sveltia) is superseded by [ADR 0004](0004-tinacms-for-visual-editing.md); the rest stands.
+
 Content (Profile, Projects with their Case Studies, Roles and Stack Groups) moves out of `src/data/*.ts` into YAML and Markdown files under the repo, edited through Sveltia CMS at `/admin`. Every save commits straight to `master`, so the existing pipeline is the publish step: `verify` gates `deploy`, and an edit that breaks the build never reaches the live Site. We chose this because the owner is the only editor, wants to edit from a phone, and the Site stays a static export on GitHub Pages — there is no server for a CMS to run on, and the content is too small to justify a database.
 
 ## Considered Options

@@ -51,9 +51,10 @@ content/            ← the Content: edit this, or use /admin
   profile.yml       identity, tagline, stats, bio, capabilities, principles
   roles.yml         experience, most relevant first
   stack.yml         Stack Groups, in display order
-  projects/<slug>.md  one Project per file; the Markdown body is its Case Study
-scripts/            compile-content.mts, run before dev, build and typecheck
-public/admin/       the Sveltia CMS page and its config.yml
+  projects/<slug>.mdx  one Project per file; the MDX body is its Case Study, with Blocks
+scripts/            compile-content.mts (before dev, build, typecheck) and build-editor.mts (the editor, in build)
+tina/config.ts      the TinaCMS editor: collections, Blocks, branding (built into public/admin by CI)
+public/sveltia/     the fallback Sveltia editor, until it is retired
 e2e/                smoke suite + the static server it runs against
 resume/             résumé + cover letter sources (HTML) → rendered to public/*.pdf
 public/             static assets, including the résumé and cover letter PDFs
@@ -61,25 +62,34 @@ public/             static assets, including the résumé and cover letter PDFs
 
 ### Editing content
 
-Edit at **`/admin`** (Sveltia CMS, signed in with GitHub), or change the files in `content/` directly. Every save is a commit to `master` with a `content:` message. It goes through Verify like any other push and never cuts a release. See [ADR 0003](docs/adr/0003-git-based-cms-on-static-export.md), and [CONTEXT.md](CONTEXT.md) for the vocabulary.
+Edit at **`/admin`** with [TinaCMS](https://tina.io): your real pages sit beside the form, update as you type, and any text on them can be clicked to jump to its field. Sign in through Tina Cloud. Every save is a commit to `master` with a `content:` message, goes through Verify like any other push, and never cuts a release. You can also change the files in `content/` directly. See [ADR 0004](docs/adr/0004-tinacms-for-visual-editing.md), and [CONTEXT.md](CONTEXT.md) for the vocabulary.
+
+Content lives in `content/`:
+
+- `profile.yml` holds the Profile.
+- `roles.yml` and `stack.yml` hold the Roles and Stack Groups, each list under a key (`roles:`, `groups:`).
+- Each Project is `projects/<slug>.mdx`. Its body is the Case Study, which can include **Blocks**: a Figure, a Callout or a Gallery.
 
 The build checks what the layout depends on, and fails, naming the file and field, if a rule is broken:
 
 - a Project's Slug is its file name, set once when it is created, in lowercase letters, digits and hyphens;
 - two to four highlights, at least one tool in the stack, and a Status of `shipped`, `active` or `archived`;
 - screenshots must be 1344×614 WebP;
-- Case Study images, in `public/case-studies/<slug>/`, must be 500 KB or smaller.
+- Case Study images, in `public/case-studies/<slug>/`, must be 500 KB or smaller;
+- every Figure and Gallery image needs alt text, and a Gallery holds two to six images.
 
 `draft: true` keeps a Project off the Site entirely; `caseStudyDraft: true` keeps only its Case Study off. Neither has anything to do with Status.
 
-**One-time setup for sign-in.** GitHub Pages can't complete GitHub's OAuth flow, so `/admin` signs in through a small Worker on your own Cloudflare account:
+**Editing locally.** `pnpm dev:tina` runs the editor at http://localhost:3000/admin/index.html against the files on disk, with no account.
 
-1. Deploy [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) to Cloudflare Workers.
-2. Register a GitHub OAuth App with `<worker-url>/callback` as its callback URL.
-3. Give the Worker `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (encrypted) and `ALLOWED_DOMAINS=adhamaa.github.io`.
-4. Put the Worker's URL in `base_url` in `public/admin/config.yml` (it is `https://sveltia-cms-auth.adham-92.workers.dev`).
+**Tina Cloud.** The deployed editor signs in through a free Tina Cloud project connected to this repository. CI builds the editor with two settings:
 
-No secret goes in this repository. Sign-in asks GitHub only for `public_repo`, so a session can't reach private repositories. On someone else's device, sign out when you're done.
+- the repository variable `NEXT_PUBLIC_TINA_CLIENT_ID`;
+- the secret `TINA_TOKEN`, a read-only content token.
+
+Without them, a push to `master` fails at the build step rather than deploying an editor nobody can sign in to.
+
+**Fallback.** The previous editor, Sveltia, stays at `/sveltia` until TinaCMS has proven itself, then it is removed along with its login Worker.
 
 ## Local development
 
@@ -108,7 +118,7 @@ pnpm test:e2e    # build, then drive a browser over out/
 
 `pnpm test:e2e` builds and runs it. With a build already in `out/`, `pnpm exec playwright test` skips the rebuild, and `pnpm test:e2e:ui` opens the interactive runner. The static server under `e2e/` is plain Node with no dependencies, for the same reason.
 
-The one exception is `e2e/admin.spec.ts`. The editor is a third-party app that needs a GitHub sign-in, so the suite only checks that its page and `config.yml` are served, by reading them. The editor itself is checked by hand.
+The one exception is `e2e/admin.spec.ts`. The editors are third-party apps that need a sign-in, so the suite only checks that their pages are served, by reading them. Editing itself is checked by hand. `e2e/editing.spec.ts` checks that visitors' pages carry none of the editor's click-to-edit markers.
 
 `src/content/load.test.mts` covers the content loader: each test builds a small Site on disk and checks the Content or errors that come back. `pnpm test:content` runs it.
 
