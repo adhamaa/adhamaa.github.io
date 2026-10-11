@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.8.0](https://github.com/adhamaa/adhamaa.github.io/compare/v1.7.0...v1.8.0) (2026-10-11)
+
+
+### Features
+
+* build the TinaCMS editor in CI, and record the move in ADR 0004 ([561dbab](https://github.com/adhamaa/adhamaa.github.io/commit/561dbab83b455a449d5932189fa788499f56a0e7)), closes [#36](https://github.com/adhamaa/adhamaa.github.io/issues/36)
+* Case Studies in MDX with Figure, Callout and Gallery Blocks ([df58f8e](https://github.com/adhamaa/adhamaa.github.io/commit/df58f8e69706ae2ac2e6199e73c2cc9e51f11ba1))
+* edit all Content in TinaCMS at /admin, click-to-edit on the page ([3a2752c](https://github.com/adhamaa/adhamaa.github.io/commit/3a2752c9e6b9659f822e498519a5c7574de47182))
+* move the CMS to TinaCMS with click-to-edit and Blocks ([0c870e6](https://github.com/adhamaa/adhamaa.github.io/commit/0c870e624d8ef9fdded3c3b4af685953a3997846))
+* try TinaCMS visual editing for Projects and Case Studies ([6a1d92c](https://github.com/adhamaa/adhamaa.github.io/commit/6a1d92c508257982e429b76ab1754ef87cc2b752))
+
 ## [1.7.0](https://github.com/adhamaa/adhamaa.github.io/compare/v1.6.1...v1.7.0) (2026-10-11)
 
 
