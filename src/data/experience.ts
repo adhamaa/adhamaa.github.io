@@ -14,6 +14,30 @@ export type Role = {
 export const experience: Role[] = [
   {
     id: "01",
+    title: "Founder & Developer",
+    company: "AA Digital Works",
+    location: "Malaysia",
+    period: "Sep 2026 — present",
+    summary:
+      "Run a one-person web and systems business that builds websites, landing pages and management systems for Malaysian businesses — and the platform the business itself runs on.",
+    points: [
+      "Scope, quote, build and launch client work directly: business websites, landing pages, and management, inventory and booking systems that replace spreadsheets and paper logs.",
+      "Built and operate the business's own platform — a back office that carries every client from first lead to quote, project and invoice, and a bilingual landing site that feeds leads straight into it.",
+      "Offer monthly support plans after launch, so each client has one person accountable for fixes, improvements and new features.",
+    ],
+    stack: [
+      "TypeScript",
+      "React",
+      "Astro",
+      "Hono",
+      "Cloudflare Workers",
+      "Drizzle",
+      "Neon Postgres",
+    ],
+    current: true,
+  },
+  {
+    id: "02",
     title: "Application Engineer / Full-Stack Engineer",
     company: "Shinkels Technik Sdn Bhd",
     location: "Johor Bahru, Malaysia",
@@ -45,7 +69,7 @@ export const experience: Role[] = [
     ],
   },
   {
-    id: "02",
+    id: "03",
     title: "Software Developer",
     company: "Rhingle Sdn Bhd",
     location: "Kuala Lumpur, Malaysia",
@@ -60,7 +84,7 @@ export const experience: Role[] = [
     stack: ["JavaScript", "React", "Node.js", "SQL", "Git"],
   },
   {
-    id: "03",
+    id: "04",
     title: "Freelance Web Developer",
     company: "Self-employed",
     location: "Batu Pahat, Malaysia",

@@ -24,6 +24,27 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "01",
+    name: "AA Digital Works",
+    kicker:
+      "The platform my own web business runs on — leads to invoices, plus the landing site that feeds it",
+    problem:
+      "A one-person web business lives or dies on follow-up. Leads arrived over WhatsApp and a contact form, quotes were documents, and projects and invoices were tracked somewhere else again — so nothing showed where a client actually stood.",
+    build:
+      "One system with a public side and an admin side. A bilingual landing site captures leads; the back office carries each one through quote, project and invoice, with tasks, time and support plans along the way. Three apps in one monorepo — the API, the admin and the landing site — sharing one Postgres database.",
+    role: "Solo — schema, API, UI, deploy",
+    year: "2026 — present",
+    stack: ["Astro", "React", "TypeScript", "Hono", "Cloudflare", "Neon Postgres"],
+    highlights: [
+      "One flow from lead to quote to project to invoice, so a client's whole history sits on one record",
+      "Client status links let a client follow their project's progress without an account",
+      "The bilingual Bahasa Melayu and English landing site feeds leads straight into the back office",
+      "Notification workflows keep the owner and staff on top of what changed, by e-mail and in-app",
+    ],
+    live: "https://aa.digitalworks.com.my/",
+    status: "active",
+  },
+  {
+    id: "02",
     name: "Sharah CMpro",
     kicker: "Accounting platform with HR built in — an independent product of mine",
     problem:
@@ -46,7 +67,7 @@ export const projects: Project[] = [
     status: "active",
   },
   {
-    id: "02",
+    id: "03",
     name: "Homeopathy Radionic App",
     kicker: "Clinical workspace for homeopathic practitioners",
     problem:
@@ -69,7 +90,7 @@ export const projects: Project[] = [
     status: "active",
   },
   {
-    id: "03",
+    id: "04",
     name: "Quantum Hikmah Certificate Register",
     kicker:
       "Member and certificate management — an Excel system of mine, rebuilt as a web app",
@@ -93,7 +114,7 @@ export const projects: Project[] = [
     status: "active",
   },
   {
-    id: "04",
+    id: "05",
     name: "adhamaa.github.io",
     kicker: "This site",
     problem:
