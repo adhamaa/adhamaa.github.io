@@ -168,7 +168,8 @@ export function loadContent(root: string): LoadResult {
     const path = join(projectsDir, name);
     const file = fileOf(path);
     const { data, body } = splitFrontMatter(readFileSync(path, "utf8"), file, errors);
-    const fields = check(projectSchema, data, file);
+    // Unreadable front matter is already reported; checking it again adds noise.
+    const fields = data === undefined ? null : check(projectSchema, data, file);
     const slug = basename(name, ".md");
     if (!SLUG.test(slug)) {
       errors.push({

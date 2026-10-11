@@ -107,6 +107,8 @@ pnpm test:e2e    # build, then drive a browser over out/
 
 `pnpm test:e2e` builds and runs it. With a build already in `out/`, `pnpm exec playwright test` skips the rebuild, and `pnpm test:e2e:ui` opens the interactive runner. The static server under `e2e/` is plain Node with no dependencies, for the same reason.
 
+The one exception is `e2e/admin.spec.ts`. The editor is a third-party app that needs a GitHub sign-in, so the suite only checks that its page and `config.yml` are served, by reading them. The editor itself is checked by hand.
+
 `src/content/load.test.mts` covers the content loader: each test builds a small Site on disk and checks the Content or errors that come back. `pnpm test:content` runs it.
 
 `.github/workflows/main.yml` runs both, with lint and typecheck, on every pull request.

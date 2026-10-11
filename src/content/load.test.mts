@@ -276,3 +276,10 @@ test("treats an optional field the editor left empty as absent", () => {
   assert.equal(projects[0].image, undefined);
   assert.equal(projects[0].repo, undefined);
 });
+
+test("reports unreadable front matter once, not again as a missing Project", () => {
+  const found = errors({ "content/projects/broken.md": "---\nbuild: Three apps: one API\n---\n" });
+
+  assert.equal(found.length, 1);
+  assert.equal(found[0].field, "(front matter)");
+});

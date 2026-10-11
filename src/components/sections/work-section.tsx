@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-import { cn, listNumber } from "@/lib/utils";
+import { caseStudyPath, cn, listNumber } from "@/lib/utils";
 import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
 import { NewTab } from "@/components/site/new-tab";
@@ -157,7 +157,7 @@ export function WorkSection() {
 
                 {project.hasCaseStudy ? (
                   <Link
-                    href={`/work/${project.slug}`}
+                    href={caseStudyPath(project.slug)}
                     className="link-underline touch-target mt-5 font-mono text-xs"
                   >
                     Read the case study

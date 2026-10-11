@@ -7,6 +7,7 @@ import { caseStudies } from "@/data/case-studies";
 import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
 import { NewTab } from "@/components/site/new-tab";
+import { caseStudyPath } from "@/lib/utils";
 
 type Params = { slug: string };
 
@@ -17,10 +18,14 @@ export function generateStaticParams(): Params[] {
   return caseStudies.map(({ slug }) => ({ slug }));
 }
 
-function find(slug: string) {
+function findCaseStudy(slug: string) {
   const caseStudy = caseStudies.find((c) => c.slug === slug);
   const project = projects.find((p) => p.slug === slug);
   return caseStudy && project ? { caseStudy, project } : null;
+}
+
+function caseStudyTitle(name: string) {
+  return `${name} — case study`;
 }
 
 export async function generateMetadata({
@@ -28,28 +33,28 @@ export async function generateMetadata({
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const found = find((await params).slug);
+  const found = findCaseStudy((await params).slug);
   if (!found) return {};
   const { project } = found;
   return {
-    title: `${project.name} — case study`,
+    title: caseStudyTitle(project.name),
     description: project.kicker,
-    alternates: { canonical: `/work/${project.slug}` },
+    alternates: { canonical: caseStudyPath(project.slug) },
     openGraph: { type: "article", title: project.name, description: project.kicker },
   };
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<Params> }) {
-  const found = find((await params).slug);
+  const found = findCaseStudy((await params).slug);
   if (!found) notFound();
   const { caseStudy, project } = found;
 
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: `${project.name} — case study`,
+    headline: caseStudyTitle(project.name),
     description: project.kicker,
-    url: `${profile.siteUrl}/work/${project.slug}`,
+    url: `${profile.siteUrl}${caseStudyPath(project.slug)}`,
     author: { "@type": "Person", name: profile.name, url: profile.siteUrl },
     about: project.name,
   };
