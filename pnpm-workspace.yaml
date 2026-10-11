@@ -1,0 +1,8 @@
+# Which dependencies may run install scripts (pnpm 11 blocks them by default).
+allowBuilds:
+  # TinaCMS's CLI bundles tina/config.ts with esbuild; its script checks the binary.
+  esbuild: true
+  # Only TinaCMS search uses it, and it compiles native code; search is off.
+  better-sqlite3: false
+  # Its script only prints a message.
+  core-js: false

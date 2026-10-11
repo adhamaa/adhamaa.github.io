@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { caseStudies } from "@/data/case-studies";
 import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
-import { NewTab } from "@/components/site/new-tab";
 import { caseStudyPath } from "@/lib/utils";
+import { CaseStudyView } from "./case-study-view";
 
 type Params = { slug: string };
 
@@ -48,6 +48,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
   const found = findCaseStudy((await params).slug);
   if (!found) notFound();
   const { caseStudy, project } = found;
+  const { slug: _slug, hasCaseStudy: _has, ...fields } = project;
 
   const article = {
     "@context": "https://schema.org",
@@ -75,60 +76,10 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
           All work
         </Link>
 
-        <header className="mt-10 max-w-3xl">
-          <span className="label">
-            <span className="text-brand">{"//"}</span> case study
-          </span>
-          <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
-            {project.name}
-          </h1>
-          <p className="mt-6 text-pretty text-lg leading-relaxed text-muted-foreground">
-            {project.kicker}
-          </p>
-
-          <dl className="mt-8 grid gap-x-8 gap-y-4 font-mono text-xs sm:grid-cols-3">
-            <div>
-              <dt className="label">Status</dt>
-              <dd className="mt-1.5">{project.status}</dd>
-            </div>
-            <div>
-              <dt className="label">Year</dt>
-              <dd className="mt-1.5">{project.year}</dd>
-            </div>
-            <div>
-              <dt className="label">Role</dt>
-              <dd className="mt-1.5">{project.role}</dd>
-            </div>
-          </dl>
-
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            {project.stack.map((tech) => (
-              <span
-                key={tech}
-                className="rounded border border-border/80 px-2 py-0.5 font-mono text-[11px] text-muted-foreground"
-              >
-                {tech}
-              </span>
-            ))}
-            {project.live && !project.live.startsWith("/") ? (
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-underline touch-target ml-2 font-mono text-xs"
-              >
-                visit
-                <ArrowUpRight className="h-3.5 w-3.5" />
-                <NewTab />
-              </a>
-            ) : null}
-          </div>
-        </header>
-
-        {/* Owner-written Markdown, rendered to HTML at build time. */}
-        <div
-          className="case-study mt-16 max-w-2xl border-t border-border/70 pt-12"
-          dangerouslySetInnerHTML={{ __html: caseStudy.html }}
+        <CaseStudyView
+          initial={{ project: { ...fields, _sys: { filename: project.slug } } }}
+          html={caseStudy.html}
+          relativePath={`${project.slug}.md`}
         />
 
         <script
