@@ -24,6 +24,8 @@ highlights:
   - Client status links let a client follow their project's progress without an account
   - The bilingual Bahasa Melayu and English landing site feeds leads straight into the back office
   - Notification workflows keep the owner and staff on top of what changed, by e-mail and in-app
+image: /screenshots/aa-digital-works.webp
+imageAlt: AA Digital Works overview with money outstanding and overdue invoices, the sales pipeline with new leads, and delivery and support plan cards — shown with demo data
 live: https://aa.digitalworks.com.my/
 status: active
 ---
