@@ -45,7 +45,10 @@ jobs:
         # silently stops running rather than failing.
         run: pnpm run lint
       - name: Typecheck
+        # Compiles content/ first, so a Content error fails here, by name.
         run: pnpm run typecheck
+      - name: Test the content loader
+        run: pnpm run test:content
       - name: Restore the Next.js build cache
         uses: actions/cache@v4
         with:

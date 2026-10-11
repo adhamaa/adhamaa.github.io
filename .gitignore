@@ -36,3 +36,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# compiled from content/ by scripts/compile-content.mts
+/src/data/generated/

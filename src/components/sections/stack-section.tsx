@@ -1,3 +1,4 @@
+import { listNumber } from "@/lib/utils";
 import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
 import { stack } from "@/data/stack";
@@ -13,7 +14,7 @@ export function StackSection() {
       <div className="grid gap-px overflow-hidden rounded-lg border border-border/80 bg-border/60 sm:grid-cols-2 lg:grid-cols-4">
         {stack.map((group, index) => (
           <Reveal
-            key={group.id}
+            key={group.title}
             delay={index * 70}
             depth
             className="flex flex-col bg-background p-6"
@@ -23,7 +24,7 @@ export function StackSection() {
                 {group.title}
               </h3>
               <span className="font-mono text-[11px] text-brand">
-                {group.id}
+                {listNumber(index)}
               </span>
             </div>
             <p className="label mb-5 normal-case tracking-normal">
