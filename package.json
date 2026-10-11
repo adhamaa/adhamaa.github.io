@@ -6,7 +6,7 @@
   "scripts": {
     "content": "node scripts/compile-content.mts",
     "dev": "pnpm run content && next dev",
-    "build": "pnpm run content && next build",
+    "build": "pnpm run content && pnpm run editor && next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "pnpm run content && tsc --noEmit",
@@ -14,7 +14,8 @@
     "test:e2e": "pnpm run build && playwright test",
     "test:e2e:ui": "playwright test --ui",
     "clean": "rm -rf .next node_modules out",
-    "dev:tina": "pnpm run content && tinacms dev -c \"next dev\""
+    "dev:tina": "pnpm run content && tinacms dev -c \"next dev\"",
+    "editor": "node scripts/build-editor.mts"
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.3.3",

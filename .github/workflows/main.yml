@@ -57,6 +57,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml') }}-
       - name: Build the static export
+        # Also builds the TinaCMS editor into /admin. With these it signs in
+        # through Tina Cloud; without them a push to master fails here rather
+        # than deploying an editor nobody can sign in to.
+        env:
+          NEXT_PUBLIC_TINA_CLIENT_ID: ${{ vars.NEXT_PUBLIC_TINA_CLIENT_ID }}
+          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
         run: pnpm run build
       - name: Cache Playwright browsers
         uses: actions/cache@v4

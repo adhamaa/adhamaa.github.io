@@ -44,6 +44,18 @@ test.describe("case study", () => {
     }
   });
 
+  test("gives every image in a Case Study alt text", async ({ page }) => {
+    await page.goto("/");
+    const links = await caseStudyLinks(page);
+
+    for (const { href } of links) {
+      await page.goto(href);
+      for (const image of await page.locator("article img").all()) {
+        expect((await image.getAttribute("alt"))?.trim(), `${href}: ${await image.getAttribute("src")}`).toBeTruthy();
+      }
+    }
+  });
+
   test("has no page at an address that isn't a Case Study", async ({ request }) => {
     const response = await request.get("/work/no-such-project");
 
