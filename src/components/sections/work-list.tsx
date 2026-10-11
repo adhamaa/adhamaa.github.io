@@ -75,12 +75,15 @@ function ProjectLinks({ project }: { project: TinaProject }) {
   );
 }
 
+/** Shared so `useTina` sees the same variables on every render. */
+const NO_VARIABLES = {};
+
 /**
  * The work list. Visitors see the build's Projects; inside /editor, Tina swaps
  * in live data and every visible field becomes click-to-edit.
  */
 export function WorkList({ initial }: { initial: WorkListData }) {
-  const { data } = useTina({ query: WORK_LIST_QUERY, variables: {}, data: initial });
+  const { data } = useTina({ query: WORK_LIST_QUERY, variables: NO_VARIABLES, data: initial });
   const projects = visibleProjects(data);
   const { edit } = useEditState();
 

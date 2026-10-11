@@ -4,6 +4,9 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { profile } from "@/data/profile";
+import { experience } from "@/data/experience";
+import { stack } from "@/data/stack";
+import { LiveContentProvider } from "@/components/site/live-content";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Nav } from "@/components/site/nav";
 import { Footer } from "@/components/site/footer";
@@ -99,7 +102,10 @@ export default function RootLayout({
           </a>
           <Nav />
           <main id="main" className="flex-1">
-            {children}
+            {/* Live Content for the editor's click-to-edit; visitors get it as built. */}
+            <LiveContentProvider profile={profile} roles={experience} stackGroups={stack}>
+              {children}
+            </LiveContentProvider>
           </main>
           <Footer />
           <CommandMenuLoader />

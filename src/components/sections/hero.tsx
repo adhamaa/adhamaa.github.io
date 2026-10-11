@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight, Download } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { profile, socials } from "@/data/profile";
+import { LiveText } from "@/components/site/live-content";
 import { marqueeItems } from "@/data/stack";
 import { iconMap } from "@/components/site/icons";
 import { Reveal } from "@/components/site/reveal";
@@ -76,16 +77,16 @@ export function Hero() {
                   )}
                 />
               </span>
-              {profile.availableLabel}
+              <LiveText name="availableLabel" />
             </span>
             <span className="font-mono text-[11px] text-muted-foreground">
-              {profile.location} · {profile.timezone}
+              <LiveText name="location" /> · <LiveText name="timezone" />
             </span>
           </Reveal>
 
           <Reveal eager delay={60}>
             <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-              {profile.name}
+              <LiveText name="name" />
               <span className="text-brand">.</span>
             </h1>
           </Reveal>
@@ -93,7 +94,7 @@ export function Hero() {
           <Reveal eager delay={120}>
             <p className="mt-4 flex flex-wrap items-center gap-2 font-mono text-sm text-muted-foreground sm:text-base">
               <span className="text-brand">$</span>
-              <span>{profile.role.toLowerCase()}</span>
+              <LiveText name="role" lower />
               <span aria-hidden className="text-muted-foreground/40">
                 —
               </span>
@@ -107,7 +108,7 @@ export function Hero() {
 
           <Reveal eager delay={180}>
             <p className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              {profile.tagline}
+              <LiveText name="tagline" />
             </p>
           </Reveal>
 
@@ -142,13 +143,13 @@ export function Hero() {
 
           <Reveal eager delay={300} depth>
             <dl className="mt-12 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-lg border border-border/80 bg-border/60">
-              {profile.stats.map((stat) => (
+              {profile.stats.map((stat, index) => (
                 <div key={stat.label} className="bg-background px-4 py-4">
                   <dt className="font-mono text-xl font-medium text-brand sm:text-2xl">
-                    {stat.value}
+                    <LiveText name="stats" index={index} sub="value" />
                   </dt>
                   <dd className="mt-1.5 text-[11px] leading-snug text-muted-foreground">
-                    {stat.label}
+                    <LiveText name="stats" index={index} sub="label" />
                   </dd>
                 </div>
               ))}

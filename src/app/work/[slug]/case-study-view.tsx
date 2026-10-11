@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useEditState, useTina } from "tinacms/dist/react";
 import { TinaMarkdown, type TinaMarkdownContent } from "tinacms/dist/rich-text";
@@ -20,11 +21,8 @@ export function CaseStudyView({
   initial: CaseStudyData;
   relativePath: string;
 }) {
-  const { data } = useTina({
-    query: CASE_STUDY_QUERY,
-    variables: { relativePath },
-    data: initial,
-  });
+  const variables = React.useMemo(() => ({ relativePath }), [relativePath]);
+  const { data } = useTina({ query: CASE_STUDY_QUERY, variables, data: initial });
   const project = data.project;
   const { edit } = useEditState();
 
